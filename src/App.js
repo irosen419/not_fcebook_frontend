@@ -1,26 +1,49 @@
 import React from 'react';
-import logo from './logo.svg';
+import { NavBar, Route } from 'react-router-dom'
+import Login from './Components/Login'
+import SignUp from './Components/SignUp'
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  
+  appLoginHandler = (userInfo) => {
+    const configObj = {
+      method: 'POST', 
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"}, 
+      body: JSON.stringify({user: userInfo})
+    }
+    fetch('http://localhost:3000/api/v1/login', configObj)
+      .then(resp => resp.json())
+      .then(console.log)
+  }
+  appSignupHandler = (userInfo) => {
+    const configObj = {
+      method: 'POST', 
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"}, 
+      body: JSON.stringify({user: userInfo})
+    }
+    fetch('http://localhost:3000/api/v1/users', configObj)
+      .then(resp => resp.json())
+      .then(console.log)
+  }
+
+
+  
+  render(){
+    return(
+      <div id="app-container">
+        Hello World
+        <SignUp appSignupHandler={this.appSignupHandler}/>
+        <Login appLoginHandler={this.appLoginHandler}/>
+      </div>
+    ) 
+  }
+
+  
 }
 
-export default App;
+
