@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, NavBar } from 'react-router-dom'
+// import { Route, NavBar } from 'react-router-dom'
 import '../Css/Login.css'
 
 export default class Login extends React.Component {

@@ -1,0 +1,16 @@
+.post {
+    /* height: 50vh; */
+
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 5px;
+
+    border-style: 1px solid lightgrey;
+    border-radius: 10px;
+
+    box-shadow: .5px 1px 3px grey;
+}
+
+.post div {
+    border-top: grey;
+}

@@ -1,8 +1,8 @@
 import React from 'react'
 import '../Css/Profile.css'
-import { Route, NavBar } from 'react-router-dom'
+// import { Route, NavBar } from 'react-router-dom'
 import PostForm from '../Components/PostForm'
-import PostContainer from '../Containers/PostContainer'
+import PostContainer from './PostContainer'
 
 export default class Profile extends React.Component {
     render() {

@@ -1,0 +1,7 @@
+.comment {
+    display: flex;
+}
+
+.comment p {
+    float: left;
+}
