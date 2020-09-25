@@ -2,6 +2,21 @@ import React from 'react'
 
 export default class TestFetch extends React.Component {
 
+  postsUserFetch = (userId) => {
+    const configObj = {
+      method: 'GET', 
+      headers: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.g0U5SAOLozk3dz0mNUrvBSR-0CSewJ5eParRWg_abVk',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      // body: {NO BODY}
+    }
+    fetch(`http://localhost:3000/api/v1/users/${user_Id}`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns all posts for the user who's ID is passed in with associated likes, comments.
+  }
+
   postShowFetch = (postIDNum) => {
     const postID = postIDNum
     const configObj = {
@@ -108,7 +123,18 @@ export default class TestFetch extends React.Component {
 
 
   clickHandler = () => {
-  
+    const configObj = {
+      method: 'GET', 
+      headers: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.g0U5SAOLozk3dz0mNUrvBSR-0CSewJ5eParRWg_abVk',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      // body: JSON.stringify({post: {user_id: 1}})
+    }
+    fetch(`http://localhost:3000/api/v1/users/1`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns all posts for the user who's ID is passed in with associated likes, comments.
   }
 
 
