@@ -3,8 +3,13 @@ import { NavBar, Route } from 'react-router-dom'
 import Login from './Components/Login'
 import SignUp from './Components/SignUp'
 import './App.css';
+import TestFetch from './Components/TestFetch';
 
 export default class App extends React.Component {
+
+  state = {
+    
+  }
   
   appLoginHandler = (userInfo) => {
     const configObj = {
@@ -39,6 +44,8 @@ export default class App extends React.Component {
         Hello World
         <SignUp appSignupHandler={this.appSignupHandler}/>
         <Login appLoginHandler={this.appLoginHandler}/>
+        <br/>
+        <TestFetch />
       </div>
     ) 
   }
