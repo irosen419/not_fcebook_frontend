@@ -1,0 +1,9 @@
+#search-bar {
+    height: 40%;
+    margin-top: 3vh;
+    margin-left: 10%;
+}
+
+#search-bar input {
+    height: 100%;
+}

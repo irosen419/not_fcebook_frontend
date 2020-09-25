@@ -1,10 +1,20 @@
-.App {
+html, body {
+  height: 100%
+}
+
+body {
+  background-color: whitesmoke;
+
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#app-container {
+  justify-content: center;
+  align-content: center;
+  max-height: 100%;
+  width: 100%;
+  
+  position: relative;
 }
 
 @media (prefers-reduced-motion: no-preference) {
