@@ -6,12 +6,12 @@ export default class TestFetch extends React.Component {
     const configObj = {
       method: 'GET', 
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.g0U5SAOLozk3dz0mNUrvBSR-0CSewJ5eParRWg_abVk',
+        'Authorization': 'Bearer <token>',
         'Content-Type': 'application/json', 
         'Accepts': 'application/json'},
       // body: {NO BODY}
     }
-    fetch(`http://localhost:3000/api/v1/users/${user_Id}`, configObj)
+    fetch(`http://localhost:3000/api/v1/users/${userId}`, configObj)
     .then(resp=>resp.json())
     .then(console.log)
     // Returns all posts for the user who's ID is passed in with associated likes, comments.
@@ -121,20 +121,99 @@ export default class TestFetch extends React.Component {
     // Returns the post Obj with all associated likes and comments (not with the delete post_like)
   }
 
+  ////////////// COMMENTS FETCH CALLS //////////////////////////////
 
-  clickHandler = () => {
+  commentPostFetch = (commentObj) => {
+    const newComment = {
+      content: commentObj.content,
+      user_id: "this.state/props.user_id",
+      post_id: "this.state/props.post_id"
+    }
     const configObj = {
-      method: 'GET', 
+      method: 'POST', 
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.g0U5SAOLozk3dz0mNUrvBSR-0CSewJ5eParRWg_abVk',
+        'Authorization': 'Bearer {this.state/props.token}',
         'Content-Type': 'application/json', 
         'Accepts': 'application/json'},
-      // body: JSON.stringify({post: {user_id: 1}})
+      body: JSON.stringify({comment: newComment})
     }
-    fetch(`http://localhost:3000/api/v1/users/1`, configObj)
+    fetch(`http://localhost:3000/api/v1/posts/${newComment.post_id}/comments/`, configObj)
     .then(resp=>resp.json())
     .then(console.log)
-    // Returns all posts for the user who's ID is passed in with associated likes, comments.
+    // Returns single post with associated likes, and new comments.
+  }
+
+  commentPatchFetch = (commentObj) => {
+    const updateComment = {
+      content: commentObj.content
+    }
+    const configObj = {
+      method: 'PATCH', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      body: JSON.stringify({comment: updateComment})
+    }
+    fetch(`http://localhost:3000/api/v1/posts/${commentObj.post_id}/comments/${commentObj.id}`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns the post with all comments include updated comment, and all likes.
+  }
+
+  commentDeleteFetch = (commentObj) => {
+    const configObj = {
+      method: 'DELETE', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      // body: JSON.stringify({comment: updateComment})
+    }
+    fetch(`http://localhost:3000/api/v1/posts/${commentObj.post_id}/comments/${commentObj.id}`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns the origianl post with comments and likes, with specified comment deleted.
+  }
+
+  commentLikeFetch =  (commentObj) => {
+    const newCommentLike = {
+      user_id: "this.state/props.user_id",
+      comment_id: commentObj.id
+    }
+    const configObj = {
+      method: 'POST', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      body: JSON.stringify({comment_like: newCommentLike})
+    }
+    fetch(`http://localhost:3000/api/v1/posts/${commentObj.post_id}/comments/${commentObj.id}/like`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns the comment that was liked, with all comment_likes associated with it.
+  }
+
+  commentUnlikeFetch = (commentObj) => {
+    const foundCommentLike = commentObj.comment_likes.find(like => like.user_id === "this.state/props.user_id")
+    const configObj = {
+      method: 'DELETE', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      // body: JSON.stringify({comment_like: newCommentLike})
+    }
+    fetch(`http://localhost:3000/api/v1/posts/${commentObj.post_id}/comments/${commentObj.id}/unlike/${foundCommentLike.id}`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns the comment that was liked, with all comment_likes associated with it (minus the deleted one).
+  }
+
+
+  clickHandler = (commentObj) => {
+    
   }
 
 
