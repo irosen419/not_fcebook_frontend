@@ -1,0 +1,40 @@
+div#signup {
+    width: 15%;
+    margin-left: 42.5%;
+    margin-top: 15vh;
+    padding: 12px;
+
+    border-radius: 5%;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+
+    position: absolute;
+    z-index: 2;
+}
+
+div#signup form#signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    font-size: 25px;
+    height: 32px;
+
+    margin: 8px;
+
+    border-radius: 5%;
+    border-width: .5px;
+    border-color: blueviolet;
+
+    background-color: #dad1e3;
+}
+
+input[type=submit]:hover {
+    cursor: pointer;
+}
+
+.close, button {
+    float: right;
+}
