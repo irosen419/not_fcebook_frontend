@@ -1,6 +1,8 @@
 #post-container {
-    width: 37.5%;
-    height: 100%;
-    margin: auto;
-    border: 1px solid;
+    width: 35%;
+    height: 100vh;
+    margin-top: 1.5%;
+    margin-left: auto;
+    margin-right: auto;
 }
+
