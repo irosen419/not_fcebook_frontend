@@ -18,7 +18,7 @@ div#signup form#signup-form {
     flex-direction: column;
 }
 
-input {
+div#signup input {
     font-size: 25px;
     height: 32px;
 
@@ -26,12 +26,12 @@ input {
 
     border-radius: 5%;
     border-width: .5px;
-    border-color: blueviolet;
+    /* border-color: blueviolet; */
 
-    background-color: #dad1e3;
+    /* background-color: #dad1e3; */
 }
 
-input[type=submit]:hover {
+div#signup input[type=submit]:hover {
     cursor: pointer;
 }
 

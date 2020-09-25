@@ -1,5 +1,6 @@
 import React from 'react'
-import './Login.css'
+import { Route, NavBar } from 'react-router-dom'
+import '../Css/Login.css'
 
 export default class Login extends React.Component {
 
@@ -27,7 +28,7 @@ export default class Login extends React.Component {
     }
 
     clickHandler = () => {
-        this.props.displaySignup()
+        this.props.displayHandler()
     }
 
     render() {

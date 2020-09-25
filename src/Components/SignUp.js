@@ -1,5 +1,5 @@
 import React from 'react'
-import './Signup.css'
+import '../Css/Signup.css'
 
 export default class SignUp extends React.Component {
   state = {
@@ -34,7 +34,7 @@ export default class SignUp extends React.Component {
   }
 
   clickHandler = () => {
-    this.props.closeSignup()
+    this.props.displayHandler()
   }
 
   render() {

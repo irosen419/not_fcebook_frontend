@@ -12,27 +12,31 @@ div#login {
 
     z-index: 0;
 }
-
+/* 
 h1 {
     color: blueviolet;
-}
+} */
 
 div#login form#login-form {
     display: flex;
     flex-direction: column;
 }
 
-input {
-    font-size: 25px;
+div#login input[type="text"] {
+    font-size: 16px;
+}
+
+div#login input {
+    
     height: 32px;
 
     margin: 8px;
 
     border-radius: 5%;
     border-width: .5px;
-    border-color: blueviolet;
+    /* border-color: blueviolet; */
 
-    background-color: #dad1e3;
+    /* background-color: #dad1e3; */
 }
 
 #not-a-member {

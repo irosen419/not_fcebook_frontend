@@ -2,7 +2,9 @@ import React from 'react';
 import { Route } from 'react-router-dom'
 import Login from './Components/Login'
 import SignUp from './Components/SignUp'
-import './App.css';
+import Profile from './Containers/Profile'
+import Header from './Containers/Header'
+import './Css/App.css';
 
 export default class App extends React.Component {
 
@@ -46,8 +48,8 @@ export default class App extends React.Component {
       })))
   }
 
-  displaySignup = () => {
-    this.setState(() => ({ signup: true }))
+  displayHandler = () => {
+    this.setState((previousState) => ({ signup: !previousState.signup }))
   }
 
   closeSignup = () => {
@@ -57,8 +59,9 @@ export default class App extends React.Component {
   render() {
     return (
       <div id="app-container">
-        {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} closeSignup={this.closeSignup} /> : null}
-        {this.state.signup ? null : <Login appLoginHandler={this.appLoginHandler} displaySignup={this.displaySignup} />}
+        {/* {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} */}
+        <Header />
+        <Profile />
       </div>
     )
   }
