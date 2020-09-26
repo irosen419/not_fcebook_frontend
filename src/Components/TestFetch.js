@@ -212,7 +212,70 @@ export default class TestFetch extends React.Component {
   }
 
 
-  clickHandler = (commentObj) => {
+  /////////////// USER FETCH CALLS W/FOLLOW FUNCTIONALITY //////////////
+
+
+  follow = (currentUserId, followedUserId) => {
+    const configObj = {
+      method: 'POST', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      body: JSON.stringify({follow: {follower_id: currentUserId, followed_user_id: followedUserId}})
+    }
+    fetch(`http://localhost:3000/api/v1/users/${currentUserId}/follow`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    //Returns the current user with no followers or followings associations
+  }
+
+  unfollow = (currentUserId, followedUserId) => {
+    const configObj = {
+      method: 'POST', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      body: JSON.stringify({follow: {follower_id: currentUserId, followed_user_id: followedUserId}})
+    }
+    fetch(`http://localhost:3000/api/v1/users/${currentUserId}/unfollow`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    //Returns the current user with no followers or followings associations
+  }
+
+  getUsersFollowers = (currentUserId) => {
+    const configObj = {
+      method: 'GET', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}',
+        'Content-Type': 'application/json', 
+        'Accepts': 'application/json'},
+      // body: {NO BODY}
+    }
+    fetch(`http://localhost:3000/api/v1/users/${currentUserId}/followers`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns an array of the current users FOLLOWERS
+  }
+
+  getUsersFollowings = (currentUserId) => {
+    const configObj = {
+      method: 'GET', 
+      headers: {
+        'Authorization': 'Bearer {this.state/props.token}', 
+        'Accepts': 'application/json'},
+      // body: {NO BODY}
+    }
+    fetch(`http://localhost:3000/api/v1/users/${currentUserId}/followings`, configObj)
+    .then(resp=>resp.json())
+    .then(console.log)
+    // Returns an array of the current uses FOLLOWINGS
+  }
+
+
+  clickHandler = (currentUserId) => {
     
   }
 
