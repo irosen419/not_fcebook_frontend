@@ -1,12 +1,12 @@
 import React from 'react';
-// import { Route } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import SignUp from './Components/SignUp'
 import Profile from './Containers/Profile'
-import Header from './Containers/Header'
+// import Header from './Containers/Header'
 import './Css/App.css';
 
-export default class App extends React.Component {
+class App extends React.Component {
 
   state = {
     user: "",
@@ -28,7 +28,7 @@ export default class App extends React.Component {
       .then(userData => this.setState(() => ({
         user: userData.user,
         token: userData.jwt
-      })))
+      }), () => this.props.history.push(`/profile/${this.state.user.id}`)))
   }
 
   appSignupHandler = (userInfo) => {
@@ -44,8 +44,9 @@ export default class App extends React.Component {
       .then(resp => resp.json())
       .then(userData => this.setState(() => ({
         user: userData.user,
-        token: userData.jwt
-      })))
+        token: userData.jwt,
+        signup: false
+      }), () => this.props.history.push(`/profile/${this.state.user.id}`)))
   }
 
   displayHandler = () => {
@@ -56,17 +57,19 @@ export default class App extends React.Component {
     this.setState(() => ({ signup: false }))
   }
 
+
   render() {
     return (
       <div id="app-container">
-        {/* {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} */}
-        <Header />
-        <Profile />
+        <Switch>
+          {this.state.signup ? <SignUp userId={this.state.user.id} appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : null}
+          <Route path='/profile/:id' render={() => <Profile user={this.state.user} token={this.state.token} />} />
+          <Route path="/login" render={() => <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} />
+          {/* <Header />*/}
+        </Switch>
       </div>
     )
   }
-
-
 }
 
-
+export default withRouter(App)

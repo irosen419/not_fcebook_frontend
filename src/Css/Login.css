@@ -1,21 +1,26 @@
-div#login {
-    position: absolute;
+div#welcome {
+    height: 100%;
 
-    width: 15%;
-    margin-left: 42.5%;
-    margin-top: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+}
+
+div#login, div#title-lines {
+    margin: 10%;
+}
+
+div#login {
+
+    width: 20%;
     padding: 12px;
 
-    border-radius: 5%;
+    border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: white;
 
-    z-index: 0;
 }
-/* 
-h1 {
-    color: blueviolet;
-} */
 
 div#login form#login-form {
     display: flex;
@@ -25,23 +30,22 @@ div#login form#login-form {
 div#login input[type="text"] {
     font-size: 16px;
 }
+div#login input[type="submit"] {
+    font-size: x-large;
+}
 
 div#login input {
     
-    height: 32px;
+    height: 56px;
 
     margin: 8px;
 
-    border-radius: 5%;
+    border-radius: 5px;
     border-width: .5px;
-    /* border-color: blueviolet; */
-
-    /* background-color: #dad1e3; */
 }
 
 #not-a-member {
     display: flex;
-
     justify-content: center;
 }
 

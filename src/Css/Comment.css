@@ -1,7 +1,16 @@
 .comment {
     display: flex;
+    padding-left: 20px;
+    font-size: .9375rem;
+    height: 45px;
+    margin-top: 5px;
+
+    border-style: none;
+    border-radius: 20px;
+
+    background-color: #dae1ed;
 }
 
-.comment p {
-    float: left;
+.comment .like-component {
+    float: right;
 }

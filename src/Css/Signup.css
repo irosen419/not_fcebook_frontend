@@ -1,7 +1,21 @@
+div#signup-modal {
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: none;
+    opacity: 0.8;
+
+    z-index: 1;
+}
+
 div#signup {
     width: 15%;
-    margin-left: 42.5%;
-    margin-top: 15vh;
     padding: 12px;
 
     border-radius: 5%;
@@ -9,8 +23,7 @@ div#signup {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: white;
 
-    position: absolute;
-    z-index: 2;
+    opacity: 1;
 }
 
 div#signup form#signup-form {
@@ -19,16 +32,13 @@ div#signup form#signup-form {
 }
 
 div#signup input {
-    font-size: 25px;
-    height: 32px;
+    font-size: medium;
+    height: 36px;
 
     margin: 8px;
 
-    border-radius: 5%;
+    border-radius: 5px;
     border-width: .5px;
-    /* border-color: blueviolet; */
-
-    /* background-color: #dad1e3; */
 }
 
 div#signup input[type=submit]:hover {
@@ -36,5 +46,6 @@ div#signup input[type=submit]:hover {
 }
 
 .close, button {
+    border-style: none;
     float: right;
 }
