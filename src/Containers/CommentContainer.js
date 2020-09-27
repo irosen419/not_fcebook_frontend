@@ -1,14 +1,14 @@
 import React from 'react'
-import { createPortal } from 'react-dom'
+// import { createPortal } from 'react-dom'
 // import '../Css/CommentContainer.css'
 // import { Route, NavBar } from 'react-router-dom'
 import Comment from '../Components/Comment'
+import CommentForm from '../Components/CommentForm'
 
 export default class PostContainer extends React.Component {
 
     state = {
-        commentNum: 3,
-        comments: this.props.comments
+        comments: this.props.post.comments ? this.props.post.comments : []
     }
 
     componentDidMount() {
@@ -16,17 +16,40 @@ export default class PostContainer extends React.Component {
     }
     renderComments = () => {
         let comments = this.state.comments
-        for (let i = 0; i < this.state.commentNum; i++) {
-            let comment = { content: "This is a comment. And these are all the words...", user_id: i, created_at: `6:1${i}PM` }
-            comments.push(<Comment key={i} comment={comment} />)
-        }
-        this.setState(() => ({ comments: comments }))
+        return comments.map(comment => <Comment key={comment.id} user={this.props.post.user_name} token={this.props.token} comment={comment} />)
     }
 
+    commentSubmitHandler = (comment) => {
+        this.commentPostFetch(comment)
+    }
+
+    commentPostFetch = (commentObj) => {
+        const newComment = {
+            content: commentObj.content,
+            user_id: this.props.userId,
+            post_id: this.props.post.id
+        }
+        const configObj = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this.props.token}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ comment: newComment })
+        }
+        fetch(`http://localhost:3000/api/v1/posts/${newComment.post_id}/comments/`, configObj)
+            .then(resp => resp.json())
+            .then(post => this.setState(() => ({ comments: post.post.comments })))
+        // Returns single post with associated likes, and new comments.
+    }
+    //this.setState(() => ({ comments: comment.post.comments }))
     render() {
+        console.log("Post: ", this.props.post)
         return (
-            <div className="comment-container">
-                {this.state.comments}
+            <div className="comment-container" >
+                { this.renderComments()}
+                < CommentForm commentSubmitHandler={this.commentSubmitHandler} />
             </div>
         )
     }

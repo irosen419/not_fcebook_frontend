@@ -1,5 +1,5 @@
 import React from 'react'
-// import { Route, NavBar } from 'react-router-dom'
+// import { Route, NavLink, Switch } from 'react-router-dom'
 import '../Css/Login.css'
 
 export default class Login extends React.Component {
@@ -31,17 +31,28 @@ export default class Login extends React.Component {
         this.props.displayHandler()
     }
 
+    submitHandler = () => {
+        this.props.appLoginHandler(this.state)
+    }
+
     render() {
         return (
-            <div id="login">
-                <form id="login-form" onSubmit={this.loginHandler}>
-                    <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.changeHandler} />
-                    <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
-                    <input type="submit" value="Log In" />
-                </form>
-                <div id="not-a-member">
-                    <p>Not a member?</p>
-                    <button id="signup-from-login" onClick={this.clickHandler}>Sign Up</button>
+
+            <div id="welcome">
+                <div id="title-lines">
+                    <h1>not Facebook</h1>
+                    <h3>Our Tagline</h3>
+                </div>
+                <div id="login">
+                    <form id="login-form" onSubmit={this.loginHandler}>
+                        <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.changeHandler} />
+                        <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
+                        <input type="submit" value="Log In" onClick={this.submitHandler} />
+                    </form>
+                    <div id="not-a-member">
+                        <p>Not a member?</p>
+                        <button id="signup-from-login" onClick={this.clickHandler}>Sign Up</button>
+                    </div>
                 </div>
             </div>
         )
