@@ -1,7 +1,7 @@
 #search-bar {
     height: 40%;
     margin-top: 3vh;
-    margin-left: 10%;
+    margin-left: 15%;
 
     align-items: center;
 }
@@ -12,4 +12,13 @@
 
     border-style: none;
     border-radius: 15px;
+}
+
+#search-bar li {
+    list-style: none;
+    margin: 5px;
+    border-style: 1px solid;
+    border-color: black;
+    border-radius: 10px;
+    background-color: white;
 }

@@ -10,7 +10,7 @@ export default class Like extends React.Component {
 
     addLike = () => {
         if (this.props.postAddLike) {
-            this.props.postAddLike({ post_id: this.props.post.id, user_id: this.props.userId })
+            this.props.postAddLike({ post_id: this.props.post.id, user_id: this.props.user.id })
         } else if (this.props.commentAddLike) {
             this.props.commentAddLike({ user_id: this.props.comment.user_id, comment_id: this.props.comment.id })
         }
@@ -18,7 +18,7 @@ export default class Like extends React.Component {
 
     removeLike = () => {
         if (this.props.postRemoveLike) {
-            this.props.postRemoveLike({ post_id: this.props.post.id, user_id: this.props.userId })
+            this.props.postRemoveLike({ post_id: this.props.post.id, user_id: this.props.user.id })
         } else if (this.props.commentRemoveLike) {
             this.props.commentRemoveLike({ user_id: this.props.comment.user_id, comment_id: this.props.comment.id })
         }

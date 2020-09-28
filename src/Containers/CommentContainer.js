@@ -16,7 +16,7 @@ export default class PostContainer extends React.Component {
     }
     renderComments = () => {
         let comments = this.state.comments
-        return comments.map(comment => <Comment key={comment.id} user={this.props.post.user_name} token={this.props.token} comment={comment} />)
+        return comments.map(comment => <Comment key={comment.id} user={this.props.post.user_name} user={this.props.user} comment={comment} />)
     }
 
     commentSubmitHandler = (comment) => {
@@ -26,13 +26,14 @@ export default class PostContainer extends React.Component {
     commentPostFetch = (commentObj) => {
         const newComment = {
             content: commentObj.content,
-            user_id: this.props.userId,
+            user_id: this.props.user.id,
             post_id: this.props.post.id
         }
+
         const configObj = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
@@ -45,11 +46,10 @@ export default class PostContainer extends React.Component {
     }
     //this.setState(() => ({ comments: comment.post.comments }))
     render() {
-        console.log("Post: ", this.props.post)
         return (
             <div className="comment-container" >
                 { this.renderComments()}
-                < CommentForm commentSubmitHandler={this.commentSubmitHandler} />
+                < CommentForm user={this.props.user} commentSubmitHandler={this.commentSubmitHandler} />
             </div>
         )
     }

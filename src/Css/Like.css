@@ -1,4 +1,4 @@
 .like-component {
     display: flex;
-    float: right;
+    margin-right: 10px;
 }

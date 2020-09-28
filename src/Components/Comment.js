@@ -17,7 +17,7 @@ export default class Comment extends React.Component {
         const configObj = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
@@ -33,7 +33,7 @@ export default class Comment extends React.Component {
     }
 
     commentRemoveLike = (like) => {
-        this.commentUnlikeFetch(this.state.comment, like)
+        this.commentUnlikeFetch(this.props.comment, like)
     }
 
     commentUnlikeFetch = (commentObj, likeObj) => {
@@ -41,7 +41,7 @@ export default class Comment extends React.Component {
         const configObj = {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             }
@@ -57,10 +57,9 @@ export default class Comment extends React.Component {
     }
 
     render() {
-        console.log("Comment State: ", this.state)
         return (
             <div className="comment" >
-                <strong><p>{this.props.user}:</p></strong>
+                <strong><p>{this.props.comment.user_name}:</p></strong>
                 <p>{this.props.comment.content}</p>
                 <Like liked={this.state.liked} likeNum={this.state.comment.comment_likes.length} comment={this.state.comment} commentAddLike={this.commentAddLike} commentRemoveLike={this.commentRemoveLike} />
             </div>

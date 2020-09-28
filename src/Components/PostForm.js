@@ -23,7 +23,7 @@ export default class PostForm extends React.Component {
         return (
             <form id="post-form" onSubmit={this.submitHandler}>
                 <div id="inner-form">
-                    <input type="text" name="content" value={this.setState.content} onChange={this.changeHanlder} />
+                    <input type="text" name="content" value={this.state.content} onChange={this.changeHanlder} />
                     <input type="submit" value="Post" />
                 </div>
             </form>

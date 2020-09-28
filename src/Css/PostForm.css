@@ -3,9 +3,9 @@
 
     width: 25%;
     margin: auto;
+    margin-top: 3.5vh;
     padding: 5%;
 
-    border-style: 1px solid lightgrey;
     border-radius: 10px;
 
     box-shadow: .5px 1px 3px grey;

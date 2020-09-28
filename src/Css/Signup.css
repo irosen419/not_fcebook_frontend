@@ -8,7 +8,7 @@ div#signup-modal {
     height: 100%;
     width: 100%;
 
-    background-color: none;
+    background-color: whitesmoke;
     opacity: 0.8;
 
     z-index: 1;
