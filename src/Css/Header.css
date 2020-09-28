@@ -2,5 +2,16 @@
     display: flex;
     height: 10vh;
 
+    position: relative;
+
     background-color: blue;
+}
+
+#header button {
+    position: absolute;
+    height: 40%;
+    top: 30%;
+    right: 3.5%;
+
+    font-size: large;
 }

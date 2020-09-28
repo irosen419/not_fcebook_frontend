@@ -1,6 +1,5 @@
 import React from 'react'
 import '../Css/Post.css'
-import PostHeader from './PostHeader'
 import PostContent from './PostContent'
 import CommentContainer from '../Containers/CommentContainer'
 import Like from './Like'
@@ -8,7 +7,7 @@ import Like from './Like'
 export default class Post extends React.Component {
 
     state = {
-        post: this.props.post,
+        post: "",
         liked: false
     }
 
@@ -17,11 +16,10 @@ export default class Post extends React.Component {
     }
 
     postLikeFetch = (newLike) => {
-        console.log("New Like: ", newLike)
         const configObj = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
@@ -45,7 +43,7 @@ export default class Post extends React.Component {
         const configObj = {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             }
@@ -61,13 +59,12 @@ export default class Post extends React.Component {
     }
 
     render() {
-        console.log("Likes: ", this.props.post)
+
         return (
             <div className="post">
-                <PostHeader post={this.state.post} />
-                <PostContent content={this.state.post.content} />
-                <Like userId={this.props.userId} post={this.state.post} liked={this.state.liked} token={this.props.token} likeNum={this.state.post.post_likes.length} postAddLike={this.postAddLike} postRemoveLike={this.postRemoveLike} />
-                <CommentContainer userId={this.props.userId} token={this.props.token} post={this.state.post} />
+                <PostContent post={this.props.post} />
+                <Like user={this.props.user} post={this.props.post} liked={this.state.liked} likeNum={this.props.post.post_likes.length} postAddLike={this.postAddLike} postRemoveLike={this.postRemoveLike} />
+                <CommentContainer user={this.props.user} post={this.props.post} />
             </div>
         )
     }
