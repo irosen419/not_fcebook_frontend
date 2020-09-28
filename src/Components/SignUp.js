@@ -1,4 +1,6 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
+import '../Css/Signup.css'
 
 export default class SignUp extends React.Component {
   state = {
@@ -9,35 +11,41 @@ export default class SignUp extends React.Component {
     email: "",
     password: "",
     password_confirmation: ""
-}
+  }
 
-signupHandler = (e) => {
-  e.preventDefault()
-  this.props.appSignupHandler(this.state)
-}
+  signupHandler = (e) => {
+    e.preventDefault()
+    this.props.appSignupHandler(this.state)
+  }
 
-changeHandler = (e) => {
+  changeHandler = (e) => {
     e.persist()
-    this.setState(()=>({
-        [e.target.name]: e.target.value
+    this.setState(() => ({
+      [e.target.name]: e.target.value
     }))
-}
+  }
 
-render() {
-    return(
-      <div>
-        <h1>Sign Up</h1>
-        <form id="login-form" onSubmit={this.signupHandler}>
+  clickHandler = () => {
+    this.props.displayHandler()
+  }
+
+  render() {
+    return (
+      <div id="signup-modal">
+        <div id="signup">
+          <button className="close" onClick={this.clickHandler}>X</button>
+          <form id="signup-form" onSubmit={this.signupHandler}>
             <input type="text" name="first_name" placeholder="First name" value={this.state.firstName} onChange={this.changeHandler} />
             <input type="text" name="last_name" placeholder="Last name" value={this.state.lastName} onChange={this.changeHandler} />
-            <input type="date" name="birthdate" placeholder="DOB" value={this.state.birthdate} onChange={this.changeHandler} />
+            <input type="date" name="birthdate" placeholder="Birthday" value={this.state.birthdate} onChange={this.changeHandler} />
             <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.changeHandler} />
             <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
             <input type="text" name="password_confirmation" placeholder="Confirm Password" value={this.state.password_confirmation} onChange={this.changeHandler} />
             <input type="text" name="img_url" placeholder="Profil Picture URL" value={this.state.img_url} onChange={this.changeHandler} />
-            <input type="submit" value="Sign Up" />            
-        </form>
+            <input type="submit" value="Sign Up" />
+          </form>
+        </div >
       </div>
     )
-}
+  }
 }

@@ -271,7 +271,7 @@ export default class TestFetch extends React.Component {
     fetch(`http://localhost:3000/api/v1/users/${currentUserId}/followings`, configObj)
     .then(resp=>resp.json())
     .then(console.log)
-    // Returns an array of the current uses FOLLOWINGS
+    // Returns an array of the current users FOLLOWINGS
   }
 
 

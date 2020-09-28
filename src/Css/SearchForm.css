@@ -1,0 +1,15 @@
+#search-bar {
+    height: 40%;
+    margin-top: 3vh;
+    margin-left: 10%;
+
+    align-items: center;
+}
+
+#search-bar input {
+    height: 100%;
+    width: 200px;
+
+    border-style: none;
+    border-radius: 15px;
+}
