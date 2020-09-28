@@ -9,7 +9,10 @@ class Profile extends React.Component {
 
     state = {
         posts: [],
-        followingArray: []
+        followingArray: [],
+        // profileId: null,
+        content: "",
+        editPostObj: ""
     }
 
     componentDidMount() {
@@ -24,38 +27,60 @@ class Profile extends React.Component {
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             }
-            // body: {NO BODY}
         }
         fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}`, configObj)
             .then(resp => resp.json())
-            .then(user => this.setState(() => ({ posts: user.user.posts })))
+            .then(user => this.setState(() => ({ 
+                posts: user.user.posts 
+            })))
         // Returns all posts for the user who's ID is passed in with associated likes, comments.
     }
-    //user => this.setState(() => ({ posts: user.user.posts }))
-    formSubmitHandler = (content) => {
-        this.postCreateFetch(content)
+
+    editPost = (postObj) => {
+        this.setState(()=>({
+            content: postObj.content,
+            editPostObj: postObj
+        }))
     }
 
-    postCreateFetch = (newPostObj) => {
-        const newPost = {
-            content: newPostObj.content,
-            user_id: this.props.user.id
-        }
-        const configObj = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                'Content-Type': 'application/json',
-                'Accepts': 'application/json'
-            },
-            body: JSON.stringify({ post: newPost })
-        }
-        fetch(`http://localhost:3000/api/v1/posts/`, configObj)
-            .then(resp => resp.json())
-            .then(postObj => this.setState(() => ({ posts: [...this.state.posts, postObj.post] })))
-        // Returns new post.
+    deletePost = (postObj) => {
+        
     }
-    //postObj => this.setState(() => ({ posts: [...this.state.posts, postObj] }))
+
+    submitHandler = () => {
+        if (this.state.editPostObj.id){
+            // -- EDIT POST FETCH -- //
+
+        } else {
+            // -- NEW POST FETCH -- //
+            const newPost = {
+                content: this.state.content,
+                user_id: this.props.user.id
+            }
+            const configObj = {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                body: JSON.stringify({ post: newPost })
+            }
+            fetch(`http://localhost:3000/api/v1/posts/`, configObj)
+                .then(resp => resp.json())
+                .then(postObj => this.setState(() => ({ 
+                    posts: [postObj.post, ...this.state.posts],
+                    content: ""
+                })))
+        }
+    }
+
+    changeHandler = (e) => {
+        e.persist()
+        this.setState(()=>({
+            content: e.target.value
+        }))
+    }
 
     follow = () => {
         const configObj = {
@@ -92,9 +117,26 @@ class Profile extends React.Component {
     render() {
         return (
             <div id="profile">
-                <InfoCard user={this.props.user} follow={this.follow} followingArray={this.state.followingArray} currentUserFollowing={this.props.currentUserFollowing} />
-                <PostForm formSubmitHandler={this.formSubmitHandler} />
-                {this.state.posts ? <PostContainer user={this.props.user} posts={this.state.posts} /> : null}
+                <InfoCard 
+                    user={this.props.user} 
+                    follow={this.follow} 
+                    followingArray={this.state.followingArray} currentUserFollowing={this.props.currentUserFollowing} 
+                />
+                
+                <PostForm 
+                    content={this.state.content} 
+                    changeHandler={this.changeHandler} 
+                    submitHandler={this.submitHandler} 
+                />
+
+                {this.state.posts ? 
+                    <PostContainer 
+                        user={this.props.user} 
+                        posts={this.state.posts}
+                        editPost={this.editPost}
+                        deletePost={this.deletePost}
+                    /> 
+                : null }
             </div>
         )
     }

@@ -6,6 +6,7 @@ import SignUp from './Components/SignUp'
 import Profile from './Containers/Profile'
 import Home from './Containers/Home'
 import Header from './Containers/Header'
+// import TestFetch from './Components/TestFetch';
 import './Css/App.css';
 
 class App extends React.Component {
@@ -118,6 +119,7 @@ class App extends React.Component {
           <Route path='/home' render={() => { return this.state.user ? <Home user={this.state.user} followingArray={this.state.followingArray} appLogout={this.appLogout} /> : null }} />
           <Route path="/login" render={() => <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} />
         </Switch>
+        <TestFetch />
       </div>
     )
   }

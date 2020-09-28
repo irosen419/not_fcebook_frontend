@@ -10,7 +10,15 @@ export default class PostContainer extends React.Component {
 
     renderPosts = () => {
         let posts = this.props.posts
-        return posts.map(post => <Post key={post.id} user={this.props.user} post={post} />)
+        return posts.map(post => 
+            <Post 
+                post={post}
+                key={post.id} 
+                user={this.props.user} 
+                editPost={this.props.editPost}
+                deletePost={this.props.deletePost}
+            />
+        )
     }
 
     render() {

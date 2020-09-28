@@ -2,31 +2,26 @@ import React from 'react'
 import '../Css/PostForm.css'
 
 
-export default class PostForm extends React.Component {
+export default function PostForm (props) {
 
-    state = {
-        content: ""
-    }
-
-    changeHanlder = (e) => {
-        e.persist()
-        this.setState(() => ({ content: e.target.value }))
-    }
-
-    submitHandler = (e) => {
+    const submit = (e) => {
         e.preventDefault()
-        this.props.formSubmitHandler(this.state)
-        this.setState(() => ({ content: "" }))
+        props.submitHandler()
     }
 
-    render() {
-        return (
-            <form id="post-form" onSubmit={this.submitHandler}>
-                <div id="inner-form">
-                    <input type="text" name="content" value={this.state.content} onChange={this.changeHanlder} />
-                    <input type="submit" value="Post" />
-                </div>
-            </form>
-        )
-    }
+    return (
+        <form id="post-form" onSubmit={submit}>
+            <div id="inner-form">
+                <input 
+                    type="text" 
+                    placeholder="New Post..." 
+                    name="content" 
+                    value={props.content} 
+                    onChange={props.changeHandler} 
+                />
+                <input type="submit" value="Post" />
+            </div>
+        </form>
+    )
+
 }

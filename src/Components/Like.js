@@ -4,8 +4,21 @@ import '../Css/Like.css'
 
 export default class Like extends React.Component {
 
+    renderButton = () => {
+        if (this.props.likes.length > 0) {
+            const userIdArray = this.props.likes.map(like => like.user_id)
+            if (userIdArray.includes(this.props.user.id)){
+                return false
+            } else {
+                return true
+            }
+        } else {
+            return true
+        }
+    }
+    
     likeHandler = () => {
-        this.props.liked ? this.removeLike() : this.addLike()
+        this.renderButton() ? this.addLike() : this.removeLike()
     }
 
     addLike = () => {
@@ -15,7 +28,6 @@ export default class Like extends React.Component {
             this.props.commentAddLike({ user_id: this.props.comment.user_id, comment_id: this.props.comment.id })
         }
     }
-
     removeLike = () => {
         if (this.props.postRemoveLike) {
             this.props.postRemoveLike({ post_id: this.props.post.id, user_id: this.props.user.id })
@@ -27,8 +39,8 @@ export default class Like extends React.Component {
     render() {
         return (
             <div className="like-component">
-                <button onClick={this.likeHandler}>{this.props.liked ? 'Unlike' : 'Like'}</button>
-                <span>{this.props.likeNum} likes</span>
+                <button onClick={this.likeHandler}>{this.renderButton() ? 'Like' : 'Unlike'}</button>
+                <span>{this.props.likes.length} likes</span>
             </div>
         )
     }
