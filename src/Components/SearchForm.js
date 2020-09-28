@@ -31,13 +31,17 @@ class SearchForm extends React.Component {
             .then(users => this.setState(() => ({ usersArray: users })))
     }
 
+    fullName = (user) => {
+        return `${user.first_name} ${user.last_name}`
+    }
+
     changeHandler = (e) => {
         e.persist()
         this.setState(() => ({ search: e.target.value }), () => {
             let listOfUsers = this.state.usersArray
             let suggestions = []
             if (this.state.search.length > 0) {
-                suggestions = listOfUsers.filter(user => user.first_name.toLowerCase().includes(this.state.search.toLowerCase()) || user.last_name.toLowerCase().includes(this.state.search.toLowerCase()))
+                suggestions = listOfUsers.filter(user => this.fullName(user).toLowerCase().includes(this.state.search.toLowerCase()))
             }
             this.setState(() => ({ suggestions: suggestions }))
         })
@@ -46,15 +50,10 @@ class SearchForm extends React.Component {
     clickHandler = (e, userId) => {
         localStorage.setItem("userId", userId)
         this.setState({ search: e.target.innerHTML })
-        // this.props.formClickHandler(userId)
-    }
-
-    submitHandler = () => {
-        this.props.history.push(`/profile/${localStorage.getItem("userId")}`)
     }
 
     mapUsers = () => {
-        return this.state.suggestions.map(user => <li key={user.id} onClick={(e) => this.clickHandler(e, user.id)} onSubmit={this.submitHandler}>{`${user.first_name} ${user.last_name}`}</li>)
+        return this.state.suggestions.map(user => <a href={`/profile/${localStorage.getItem("userId")}`}><li key={user.id} onClick={(e) => this.clickHandler(e, user.id)}>{`${user.first_name} ${user.last_name}`}</li></a>)
     }
 
     renderSuggestions = () => {

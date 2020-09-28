@@ -1,4 +1,5 @@
 #header {
+    position: fixed;
     display: flex;
     height: 10vh;
 
@@ -7,11 +8,28 @@
     background-color: blue;
 }
 
-#header button {
+button#logout-button, #profile-button, button#home-button {
     position: absolute;
     height: 40%;
     top: 30%;
-    right: 3.5%;
-
     font-size: large;
+}
+
+button#home-button {
+    margin-left: 2%;
+    background: none;
+    border-style: none;
+
+    max-width: 12%;
+
+    font-weight: bold;
+    color: white;
+}
+
+#profile-button {
+    right: 15%;
+}
+
+button#logout-button {
+    right: 3.5%;
 }

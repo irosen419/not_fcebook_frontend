@@ -29,6 +29,7 @@ export default class PostContainer extends React.Component {
             user_id: this.props.user.id,
             post_id: this.props.post.id
         }
+
         const configObj = {
             method: 'POST',
             headers: {

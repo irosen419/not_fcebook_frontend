@@ -1,6 +1,5 @@
 import React from 'react'
 import '../Css/PostContainer.css'
-// import { Route, NavBar } from 'react-router-dom'
 import Post from '../Components/Post'
 
 export default class PostContainer extends React.Component {
