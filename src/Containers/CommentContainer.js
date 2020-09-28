@@ -8,48 +8,116 @@ import CommentForm from '../Components/CommentForm'
 export default class PostContainer extends React.Component {
 
     state = {
-        comments: this.props.post.comments ? this.props.post.comments : []
+        comments: this.props.post.comments ? this.props.post.comments : [],
+        content: "", 
+        commentEditObj: ""
     }
 
-    componentDidMount() {
-        this.renderComments()
-    }
     renderComments = () => {
-        let comments = this.state.comments
-        return comments.map(comment => <Comment key={comment.id} user={this.props.post.user_name} token={this.props.token} comment={comment} />)
+        return this.state.comments.map(comment => 
+            <Comment 
+            comment={comment} 
+            key={comment.id} 
+            user={this.props.user} 
+            editComment={this.editComment} 
+            deleteComment={this.deleteComment}
+            /> 
+        )
     }
 
-    commentSubmitHandler = (comment) => {
-        this.commentPostFetch(comment)
+    changeHandler = (e) => {
+        e.persist()
+        this.setState(()=>({
+            content: e.target.value
+        }))
     }
 
-    commentPostFetch = (commentObj) => {
-        const newComment = {
+    editComment = (commentObj) => {
+        this.setState(()=>({
             content: commentObj.content,
-            user_id: this.props.userId,
-            post_id: this.props.post.id
-        }
-        const configObj = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${this.props.token}`,
-                'Content-Type': 'application/json',
-                'Accepts': 'application/json'
-            },
-            body: JSON.stringify({ comment: newComment })
-        }
-        fetch(`http://localhost:3000/api/v1/posts/${newComment.post_id}/comments/`, configObj)
-            .then(resp => resp.json())
-            .then(post => this.setState(() => ({ comments: post.post.comments })))
-        // Returns single post with associated likes, and new comments.
+            commentEditObj: commentObj
+        }))
     }
-    //this.setState(() => ({ comments: comment.post.comments }))
+
+    deleteComment = (commentObj) => {
+        const configObj = {
+            method: 'DELETE', 
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json', 
+            'Accepts': 'application/json'},
+            // body: JSON.stringify({comment: updateComment})
+        }
+        fetch(`http://localhost:3000/api/v1/posts/${commentObj.post_id}/comments/${commentObj.id}`, configObj)
+        .then(resp=>resp.json())
+        .then(post => {
+            this.setState(() => ({ 
+                comments: post.post.comments,
+                content: ""
+            }))
+        })
+    }
+
+    submitHandler = () => {
+        if (this.state.commentEditObj.id){
+            // -- EDIT COMMENT FETCH -- //
+            const updateComment = { content: this.state.content }
+            const configObj = {
+                method: 'PATCH', 
+                headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json', 
+                'Accepts': 'application/json'},
+                body: JSON.stringify({comment: updateComment})
+            }
+            fetch(`http://localhost:3000/api/v1/posts/${this.state.commentEditObj.post_id}/comments/${this.state.commentEditObj.id}`, configObj)
+            .then(resp=>resp.json())
+            .then(post => {
+                this.setState(() => ({ 
+                    comments: post.post.comments,
+                    content: "",
+                    commentEditObj: ""
+                }))
+            })
+        } else {
+            // --  NEW COMMENT FETCH -- //
+            const newComment = {
+                content: this.state.content,
+                user_id: this.props.user.id,
+                post_id: this.props.post.id
+            }
+            const configObj = {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                body: JSON.stringify({ comment: newComment })
+            }
+            fetch(`http://localhost:3000/api/v1/posts/${newComment.post_id}/comments/`, configObj)
+            .then(resp => resp.json())
+            .then(post => {
+                this.setState(() => ({ 
+                    comments: post.post.comments,
+                    content: ""
+                }))
+            })
+        }
+    }
+
     render() {
-        console.log("Post: ", this.props.post)
+
         return (
             <div className="comment-container" >
-                { this.renderComments()}
-                < CommentForm commentSubmitHandler={this.commentSubmitHandler} />
+
+                {this.renderComments()}
+
+                < CommentForm 
+                    content={this.state.content} 
+                    changeHandler={this.changeHandler} 
+                    submitHandler={this.submitHandler} 
+                />
             </div>
         )
     }

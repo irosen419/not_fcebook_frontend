@@ -1,6 +1,5 @@
 import React from 'react'
 import '../Css/Post.css'
-import PostHeader from './PostHeader'
 import PostContent from './PostContent'
 import CommentContainer from '../Containers/CommentContainer'
 import Like from './Like'
@@ -9,43 +8,35 @@ export default class Post extends React.Component {
 
     state = {
         post: this.props.post,
-        liked: false
+        likes: this.props.post.post_likes.length > 0 ? this.props.post.post_likes : []
     }
 
-    postAddLike = (like) => {
-        this.postLikeFetch(like)
-    }
-
-    postLikeFetch = (newLike) => {
-        console.log("New Like: ", newLike)
+    postAddLike = (newLikeObj) => {
         const configObj = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
-            body: JSON.stringify({ post_like: newLike })
+            body: JSON.stringify({ post_like: newLikeObj })
         }
-        fetch(`http://localhost:3000/api/v1/posts/${newLike.post_id}/like`, configObj)
+        fetch(`http://localhost:3000/api/v1/posts/${newLikeObj.post_id}/like`, configObj)
             .then(resp => resp.json())
             .then(post => this.setState(() => ({
                 post: post.post,
-                liked: true
+                likes: post.post.post_likes
             })))
         // Returns the post Obj with all associated likes and comments
     }
 
-    postRemoveLike = (like) => {
-        this.postUnlikeFetch(this.state.post, like)
-    }
-
-    postUnlikeFetch = (postObj, likeObj) => {
-        const foundPostLike = postObj.post_likes.find(like => like.user_id === likeObj.user_id)
+    postRemoveLike = (likeObj) => {
+        console.log(this.state)
+        const foundPostLike = this.state.likes.find(like => like.user_id === likeObj.user_id)
         const configObj = {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${this.props.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             }
@@ -55,19 +46,38 @@ export default class Post extends React.Component {
             .then(resp => resp.json())
             .then(post => this.setState(() => ({
                 post: post.post,
-                liked: false
+                likes: post.post.post_likes
             })))
         // Returns the post Obj with all associated likes and comments (not with the delete post_like)
     }
 
+    // editPostForm = () => {
+    //     return 
+    // }
+
     render() {
-        console.log("Likes: ", this.props.post)
         return (
             <div className="post">
-                <PostHeader post={this.state.post} />
-                <PostContent content={this.state.post.content} />
-                <Like userId={this.props.userId} post={this.state.post} liked={this.state.liked} token={this.props.token} likeNum={this.state.post.post_likes.length} postAddLike={this.postAddLike} postRemoveLike={this.postRemoveLike} />
-                <CommentContainer userId={this.props.userId} token={this.props.token} post={this.state.post} />
+                <PostContent post={this.props.post} />
+                <div className="post-wrapper" >
+                    <Like 
+                        user={this.props.user} 
+                        post={this.props.post} 
+                        likes={this.state.likes} 
+                        postAddLike={this.postAddLike} 
+                        postRemoveLike={this.postRemoveLike} 
+                    />
+                    {this.state.post.user_id === this.props.user.id ? 
+                    <div >
+                        <button onClick={() => this.props.editPost(this.state.post)} >Edit Post</button>
+                        <button onClick={() => this.props.deletePost(this.state.post)} >Delete Post</button>
+                    </div>
+                    : null }
+                </div>
+                <CommentContainer 
+                    user={this.props.user} 
+                    post={this.props.post} 
+                />
             </div>
         )
     }

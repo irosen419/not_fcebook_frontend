@@ -1,4 +1,5 @@
 import React from 'react';
+// import { findRenderedComponentWithType } from 'react-dom/test-utils';
 import { Route, Switch, withRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import SignUp from './Components/SignUp'
@@ -11,11 +12,25 @@ class App extends React.Component {
 
   state = {
     user: "",
-    token: "",
     signup: false
   }
 
-  
+  componentDidMount() {
+    const token = localStorage.getItem("token")
+    if (token) {
+      fetch('http://localhost:3000/api/v1/profile', {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(resp => resp.json())
+        .then(userData => {
+          this.setState(() => ({ user: userData.user }))
+        })
+    } else {
+      this.props.history.push('/login')
+    }
+  }
+  //userData => this.setState(() => ({ user: userData.user }))
 
   appLoginHandler = (userInfo) => {
     const configObj = {
@@ -28,10 +43,13 @@ class App extends React.Component {
     }
     fetch('http://localhost:3000/api/v1/login', configObj)
       .then(resp => resp.json())
-      .then(userData => this.setState(() => ({
-        user: userData.user,
-        token: userData.jwt
-      }), () => this.props.history.push(`/profile/${this.state.user.id}`)))
+      .then(userData => {
+        localStorage.setItem("token", userData.jwt)
+        localStorage.setItem("userId", userData.user.id)
+        this.setState(() => ({
+          user: userData.user
+        }), () => this.props.history.push(`/profile/${this.state.user.id}`))
+      })
   }
 
   appSignupHandler = (userInfo) => {
@@ -45,11 +63,13 @@ class App extends React.Component {
     }
     fetch('http://localhost:3000/api/v1/users', configObj)
       .then(resp => resp.json())
-      .then(userData => this.setState(() => ({
-        user: userData.user,
-        token: userData.jwt,
-        signup: false
-      }), () => this.props.history.push(`/profile/${this.state.user.id}`)))
+      .then(userData => {
+        localStorage.setItem("token", userData.jwt);
+        this.setState(() => ({
+          user: userData.user,
+          signup: false
+        }), () => this.props.history.push(`/profile/${this.state.user.id}`))
+      })
   }
 
   displayHandler = () => {
@@ -60,15 +80,20 @@ class App extends React.Component {
     this.setState(() => ({ signup: false }))
   }
 
+  appLogout = () => {
+    localStorage.clear("token")
+    this.props.history.push('/login')
+    this.setState({ user: "" })
+  }
 
   render() {
     return (
       <div id="app-container">
         <Switch>
-          {this.state.signup ? <SignUp userId={this.state.user.id} appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : null}
-          <Route path='/profile/:id' render={() => <Profile user={this.state.user} token={this.state.token} />} />
+          {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : null}
+          <Route path='/profile/:id' render={() => { return this.state.user ? <Profile user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null }} />
+          {/* {this.state.user ? <Header /> : null} */}
           <Route path="/login" render={() => <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} />
-          {/* <Header />*/}
         </Switch>
         <TestFetch />
       </div>

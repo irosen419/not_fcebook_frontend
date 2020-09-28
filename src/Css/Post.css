@@ -1,8 +1,6 @@
 .post {
-    /* height: 50vh; */
-
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     padding: 5px;
 
     /* border-style: 1px solid lightgrey; */
@@ -14,4 +12,10 @@
 
 .post div.post-content, div.like-component {
     border-top: 1px solid lightgrey;
+}
+
+.post-wrapper {
+    display: flex;
+    align-items: center;
+
 }
