@@ -55,24 +55,27 @@ class App extends React.Component {
   }
 
   appSignupHandler = (userInfo) => {
+    let formData = new FormData()
+    formData.append('user[first_name]', userInfo.first_name)
+    formData.append('user[last_name]', userInfo.last_name)
+    formData.append('user[birthdate]', userInfo.birthdate)
+    formData.append('user[profile_picture]', userInfo.profile_picture)
+    formData.append('user[email]', userInfo.email)
+    formData.append('user[password]', userInfo.password)
+    formData.append('user[password_confirmation]', userInfo.password_confirmation)
     const configObj = {
       method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Accepts": "application/json"
-      },
-      body: JSON.stringify({ user: userInfo })
+      body: formData
     }
     fetch('http://localhost:3000/api/v1/users', configObj)
-      .then(resp => resp.json())
-      .then(userData => {
-        localStorage.setItem("token", userData.jwt);
-        localStorage.setItem("userId", userData.user.id);
-        this.setState(() => ({
-          user: userData.user,
-          signup: false
-        }), () => this.props.history.push(`/profile/${userData.user.id}`))
-      })
+      .then(resp => console.log(resp))
+        
+        // localStorage.setItem("token", userData.jwt);
+        // localStorage.setItem("userId", userData.user.id);
+        // this.setState(() => ({
+        //   user: userData.user,
+        //   signup: false
+        // }), () => this.props.history.push(`/profile/${userData.user.id}`))
   }
 
   displayHandler = () => {

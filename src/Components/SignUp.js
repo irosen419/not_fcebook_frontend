@@ -7,7 +7,7 @@ export default class SignUp extends React.Component {
     first_name: "",
     last_name: "",
     birthdate: "",
-    img_url: "",
+    profile_picture: null,
     email: "",
     password: "",
     password_confirmation: ""
@@ -20,9 +20,16 @@ export default class SignUp extends React.Component {
 
   changeHandler = (e) => {
     e.persist()
+    console.log(e.target.files)
     this.setState(() => ({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }))
+  }
+  pictureHandler = (e) => {
+    e.persist()
+    if (e.target.files[0]) {
+      this.setState({ profile_picture: e.target.files[0] })
+    }
   }
 
   clickHandler = () => {
@@ -41,7 +48,8 @@ export default class SignUp extends React.Component {
             <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.changeHandler} />
             <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
             <input type="text" name="password_confirmation" placeholder="Confirm Password" value={this.state.password_confirmation} onChange={this.changeHandler} />
-            <input type="text" name="img_url" placeholder="Profil Picture URL" value={this.state.img_url} onChange={this.changeHandler} />
+            <input type="file" name="profile_picture" accept="image/*" onChange={this.pictureHandler} />
+            {/* <input type="text" name="img_url" placeholder="Profil Picture URL" value={this.state.img_url} onChange={this.changeHandler} /> */}
             <input type="submit" value="Sign Up" />
           </form>
         </div >

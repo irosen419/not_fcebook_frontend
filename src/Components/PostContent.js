@@ -23,7 +23,7 @@ class PostContent extends React.Component {
                         <Link to={`/profile/${this.props.post.user_id}`} >
                             {this.props.post.user_name}
                         </Link>
-                        at {this.props.post.created_at}
+                        at {this.props.post.time}
                     </h3>
                 </div>
                 <div className="post-content">

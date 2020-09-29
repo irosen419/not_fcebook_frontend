@@ -30,7 +30,7 @@ class Profile extends React.Component {
                 'Accepts': 'application/json'
             }
         }
-        fetch(`http://localhost:3000/api/v1/users/${profileId}`, configObj)
+        fetch(`http://localhost:3000/api/v1/users/${profileId}/posts`, configObj)
             .then(resp => resp.json())
             .then(posts => {
                 console.log(posts)
@@ -160,6 +160,7 @@ class Profile extends React.Component {
     }
 
     render() {
+        console.log(this.props.user)
         return (
             <div id="profile">
                 <InfoCard 
