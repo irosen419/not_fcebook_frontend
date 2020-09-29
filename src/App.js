@@ -71,7 +71,7 @@ class App extends React.Component {
         this.setState(() => ({
           user: userData.user,
           signup: false
-        }), () => this.props.history.push(`/home`))
+        }), () => this.props.history.push(`/profile/${userData.user.id}`))
       })
   }
 
