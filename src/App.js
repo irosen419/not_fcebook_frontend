@@ -46,7 +46,8 @@ class App extends React.Component {
     fetch('http://localhost:3000/api/v1/login', configObj)
       .then(resp => resp.json())
       .then(userData => {
-        localStorage.setItem("token", userData.jwt)
+        localStorage.setItem("token", userData.jwt);
+        localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
           user: userData.user
         }), () => this.props.history.push(`/home`))
@@ -66,6 +67,7 @@ class App extends React.Component {
       .then(resp => resp.json())
       .then(userData => {
         localStorage.setItem("token", userData.jwt);
+        localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
           user: userData.user,
           signup: false
@@ -115,11 +117,38 @@ class App extends React.Component {
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}
         {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : null}
         <Switch>
-          <Route path='/profile/:id' render={() => { return this.state.user ? <Profile user={this.state.user} appLogout={this.appLogout} currentUserFollowing={this.state.followingArray} /> : null }} />
-          <Route path='/home' render={() => { return this.state.user ? <Home user={this.state.user} followingArray={this.state.followingArray} appLogout={this.appLogout} /> : null }} />
-          <Route path="/login" render={() => <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} />
+          
+          <Route 
+            path='/profile/:id' 
+            render={() => { return this.state.user ? 
+              <Profile 
+                user={this.state.user} 
+                appLogout={this.appLogout} 
+                currentUserFollowing={this.state.followingArray} 
+              /> 
+            : null }} 
+          />
+          <Route 
+            path='/home' 
+            render={() => { return this.state.user ? 
+              <Home 
+                user={this.state.user} 
+                followingArray={this.state.followingArray} 
+                appLogout={this.appLogout} 
+              /> 
+            : null }} 
+          />
+          <Route 
+            path="/login" 
+            render={() => 
+              <Login 
+                appLoginHandler={this.appLoginHandler} 
+                displayHandler={this.displayHandler} 
+              />} 
+          />
+
         </Switch>
-        <TestFetch />
+
       </div>
     )
   }

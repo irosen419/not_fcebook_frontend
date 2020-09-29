@@ -8,7 +8,8 @@ export default class Post extends React.Component {
 
     state = {
         post: this.props.post,
-        likes: this.props.post.post_likes.length > 0 ? this.props.post.post_likes : []
+        likes: this.props.post.post_likes.length > 0 ? this.props.post.post_likes : [],
+        clicked: false
     }
 
     postAddLike = (newLikeObj) => {
@@ -40,7 +41,6 @@ export default class Post extends React.Component {
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             }
-            // body: {NO BODY}
         }
         fetch(`http://localhost:3000/api/v1/posts/${foundPostLike.post_id}/unlike/${foundPostLike.id}`, configObj)
             .then(resp => resp.json())
@@ -51,14 +51,31 @@ export default class Post extends React.Component {
         // Returns the post Obj with all associated likes and comments (not with the delete post_like)
     }
 
-    // editPostForm = () => {
-    //     return 
-    // }
+    edit = () => {
+        this.props.edit(this.props.post)
+        this.setState(()=>({
+            clicked: true
+        }))
+    }
+    editSubmit = () => {
+        this.props.submitHandler()
+        this.setState(()=>({
+            clicked: false
+        }))
+    }
+
+
 
     render() {
         return (
             <div className="post">
-                <PostContent post={this.props.post} />
+                <PostContent 
+                    post={this.props.post}
+                    clicked={this.state.clicked}
+                    changeHandler={this.props.changeHandler}
+                    submitHandler={this.editSubmit}
+                    editContent={this.props.editContent}
+                />
                 <div className="post-wrapper" >
                     <Like 
                         user={this.props.user} 
@@ -69,7 +86,7 @@ export default class Post extends React.Component {
                     />
                     {this.state.post.user_id === this.props.user.id ? 
                     <div >
-                        <button onClick={() => this.props.editPost(this.state.post)} >Edit Post</button>
+                        <button onClick={this.edit} >Edit Post</button>
                         <button onClick={() => this.props.deletePost(this.state.post)} >Delete Post</button>
                     </div>
                     : null }

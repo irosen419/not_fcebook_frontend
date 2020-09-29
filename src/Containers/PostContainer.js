@@ -15,14 +15,16 @@ export default class PostContainer extends React.Component {
                 post={post}
                 key={post.id} 
                 user={this.props.user} 
-                editPost={this.props.editPost}
+                edit={this.props.edit}
+                changeHandler={this.props.changeHandler}
+                submitHandler={this.props.submitHandler}
+                editContent={this.props.editContent}
                 deletePost={this.props.deletePost}
             />
         )
     }
 
     render() {
-
         return (
             <div id="post-container">
                 {this.renderPosts()}
