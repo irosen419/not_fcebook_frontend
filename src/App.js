@@ -103,9 +103,7 @@ class App extends React.Component {
         'Content-type': 'application/json',
         'Accepts': 'application/json'
       }
-      // body: {NO BODY}
     }
-
     fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/followings`, configObj)
       .then(resp => resp.json())
       .then(usersArray => this.setState(() => ({ followingArray: usersArray.followers })))

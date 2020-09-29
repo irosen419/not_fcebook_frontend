@@ -22,6 +22,7 @@ class Profile extends React.Component {
     }
 
     postsUserFetch = () => {
+        const profileId = window.location.pathname.split('/')[2]
         const configObj = {
             method: 'GET',
             headers: {
@@ -30,13 +31,14 @@ class Profile extends React.Component {
                 'Accepts': 'application/json'
             }
         }
-        fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}`, configObj)
+        fetch(`http://localhost:3000/api/v1/users/${profileId}`, configObj)
             .then(resp => resp.json())
-            .then(user => {
-                this.setState(() => ({
-                    posts: user.user.posts
-                }))
-            })
+            .then(posts => {
+                console.log(posts)
+                this.setState(() => ({ 
+                    posts: posts.posts 
+            }))
+        })
         // Returns all posts for the user who's ID is passed in with associated likes, comments.
     }
 
