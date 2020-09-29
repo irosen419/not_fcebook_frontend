@@ -18,7 +18,13 @@ class Home extends React.Component {
     renderFollowingsPosts = () => {
         let arrayOfPosts = this.props.followingArray.map(user => user.posts).flat()
         arrayOfPosts = this.sortByDate(arrayOfPosts)
-        return arrayOfPosts.map(post => <Post key={post.id} user={this.props.user} post={post} />)
+        return arrayOfPosts.map(post => 
+            <Post 
+                post={post} 
+                key={post.id} 
+                user={this.props.user} 
+            />
+        )
     }
 
     render() {

@@ -12,6 +12,7 @@ class Profile extends React.Component {
         followingArray: [],
         // profileId: null,
         content: "",
+        editContent: "",
         editPostObj: ""
     }
 
@@ -30,32 +31,68 @@ class Profile extends React.Component {
         }
         fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}`, configObj)
             .then(resp => resp.json())
-            .then(user => this.setState(() => ({ 
-                posts: user.user.posts 
-            })))
+            .then(user => {
+                console.log(user)
+                this.setState(() => ({ 
+                    posts: user.user.posts 
+            }))
+        })
         // Returns all posts for the user who's ID is passed in with associated likes, comments.
     }
 
-    editPost = (postObj) => {
-        this.setState(()=>({
-            content: postObj.content,
-            editPostObj: postObj
-        }))
-    }
-
     deletePost = (postObj) => {
-        
+        const configObj = {
+            method: 'DELETE', 
+            headers: {
+            'Authorization': 'Bearer {this.state/props.token}',
+            'Content-Type': 'application/json', 
+            'Accepts': 'application/json'},
+        }
+        fetch(`http://localhost:3000/api/v1/posts/${postObj.id}`, configObj)
+        .then(resp=>resp.json())
+        .then(emptyObj => {
+            if (!emptyObj.id){
+                const newArray = this.state.posts.filter(post => post.id !== postObj.id)
+                this.setState(()=>({
+                    posts: newArray
+                }))
+            }
+        })
     }
 
     submitHandler = () => {
         if (this.state.editPostObj.id){
             // -- EDIT POST FETCH -- //
+            const newPost = {
+                content: this.state.editContent,
+                user_id: this.props.user.id
+            }
+            const configObj = {
+                method: 'PATCH', 
+                headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json', 
+                'Accepts': 'application/json'},
+                body: JSON.stringify({post: newPost})
+            }
+            fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
+            .then(resp=>resp.json())
+            .then(updatedPost => {
+                const newArray = this.state.posts.filter(post => post.id !== updatedPost.post.id)
+                this.setState(()=>({
+                    posts: [updatedPost.post, ...newArray], 
+                    editContent: "",
+                    editPostObj: ""
+                }))
+            })
 
         } else {
             // -- NEW POST FETCH -- //
+            const profileUserId = parseInt(localStorage.getItem("userId"))
             const newPost = {
                 content: this.state.content,
-                user_id: this.props.user.id
+                user_id: this.props.user.id,
+                profile_user_id: profileUserId
             }
             const configObj = {
                 method: 'POST',
@@ -78,7 +115,14 @@ class Profile extends React.Component {
     changeHandler = (e) => {
         e.persist()
         this.setState(()=>({
-            content: e.target.value
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    edit = (postObj) => {
+        this.setState(()=>({
+            editContent: postObj.content,
+            editPostObj: postObj
         }))
     }
 
@@ -133,7 +177,10 @@ class Profile extends React.Component {
                     <PostContainer 
                         user={this.props.user} 
                         posts={this.state.posts}
-                        editPost={this.editPost}
+                        edit={this.edit}
+                        changeHandler={this.changeHandler}
+                        submitHandler={this.submitHandler}
+                        editContent={this.state.editContent}
                         deletePost={this.deletePost}
                     /> 
                 : null }
