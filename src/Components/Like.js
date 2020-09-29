@@ -7,7 +7,7 @@ export default class Like extends React.Component {
     renderButton = () => {
         if (this.props.likes.length > 0) {
             const userIdArray = this.props.likes.map(like => like.user_id)
-            if (userIdArray.includes(this.props.user.id)){
+            if (userIdArray.includes(this.props.user.id)) {
                 return false
             } else {
                 return true
@@ -16,7 +16,7 @@ export default class Like extends React.Component {
             return true
         }
     }
-    
+
     likeHandler = () => {
         this.renderButton() ? this.addLike() : this.removeLike()
     }

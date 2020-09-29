@@ -119,7 +119,7 @@ class App extends React.Component {
           <Route path='/home' render={() => { return this.state.user ? <Home user={this.state.user} followingArray={this.state.followingArray} appLogout={this.appLogout} /> : null }} />
           <Route path="/login" render={() => <Login appLoginHandler={this.appLoginHandler} displayHandler={this.displayHandler} />} />
         </Switch>
-        <TestFetch />
+        {/* <TestFetch /> */}
       </div>
     )
   }
