@@ -1,9 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
-
-
-
 function InfoCard(props) {
 
     const nonUserId = parseInt(localStorage.getItem("userId"))
