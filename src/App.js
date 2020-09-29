@@ -111,40 +111,90 @@ class App extends React.Component {
       .then(usersArray => this.setState(() => ({ followingArray: usersArray.followers })))
   }
 
+  followOrUnfollow = (e) => {
+    if (e.target.innerText === 'Follow') {
+      this.follow()
+    } else if (e.target.innerText === 'Unfollow') {
+      this.unfollow()
+    }
+  }
+
+  follow = () => {
+    const configObj = {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
+    }
+    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/follow`, configObj)
+      .then(resp => resp.json())
+      .then(user => this.setState((previousState) => ({ followingArray: [...previousState.followingArray, user.user] })))
+    //Returns the current user with no followers or followings associations
+  }
+
+  unfollow = () => {
+    const configObj = {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
+    }
+    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/unfollow`, configObj)
+      .then(resp => resp.json())
+      .then(user => {
+        let newArray = this.state.followingArray
+        let foundUser = newArray.find(userObj => userObj.id === user.user.id)
+        newArray.splice(newArray.indexOf(foundUser), 1)
+        this.setState(() => ({ followingArray: newArray }))
+      })
+    //Returns the current user with no followers or followings associations
+  }
+
   render() {
     return (
       <div id="app-container">
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}
         {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : null}
         <Switch>
-          
-          <Route 
-            path='/profile/:id' 
-            render={() => { return this.state.user ? 
-              <Profile 
-                user={this.state.user} 
-                appLogout={this.appLogout} 
-                currentUserFollowing={this.state.followingArray} 
-              /> 
-            : null }} 
+
+          <Route
+            path='/profile/:id'
+            render={() => {
+              return this.state.user ?
+                <Profile
+                  user={this.state.user}
+                  appLogout={this.appLogout}
+                  currentUserFollowing={this.state.followingArray}
+                  followOrUnfollow={this.followOrUnfollow}
+                />
+                : null
+            }}
           />
-          <Route 
-            path='/home' 
-            render={() => { return this.state.user ? 
-              <Home 
-                user={this.state.user} 
-                followingArray={this.state.followingArray} 
-                appLogout={this.appLogout} 
-              /> 
-            : null }} 
+          <Route
+            path='/home'
+            render={() => {
+              return this.state.user ?
+                <Home
+                  user={this.state.user}
+                  followingArray={this.state.followingArray}
+                  appLogout={this.appLogout}
+                />
+                : null
+            }}
           />
-          <Route 
-            path="/login" 
-            render={() => 
-              <Login 
-                appLoginHandler={this.appLoginHandler} 
-                displayHandler={this.displayHandler} 
-              />} 
+          <Route
+            path="/login"
+            render={() =>
+              <Login
+                appLoginHandler={this.appLoginHandler}
+                displayHandler={this.displayHandler}
+              />}
           />
 
         </Switch>
