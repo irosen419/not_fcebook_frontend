@@ -46,6 +46,7 @@ class App extends React.Component {
     fetch('http://localhost:3000/api/v1/login', configObj)
       .then(resp => resp.json())
       .then(userData => {
+        
         localStorage.setItem("token", userData.jwt);
         localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
@@ -63,6 +64,7 @@ class App extends React.Component {
     formData.append('user[email]', userInfo.email)
     formData.append('user[password]', userInfo.password)
     formData.append('user[password_confirmation]', userInfo.password_confirmation)
+
     const configObj = {
       method: 'POST',
       body: formData
@@ -70,6 +72,7 @@ class App extends React.Component {
     fetch('http://localhost:3000/api/v1/users', configObj)
       .then(resp => resp.json())
       .then(userData => {
+        console.log(userData)
         localStorage.setItem("token", userData.jwt);
         localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
