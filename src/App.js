@@ -65,14 +65,13 @@ class App extends React.Component {
 
   appSignupHandler = (userInfo) => {
     let formData = new FormData()
-    formData.append('profile_picture', userInfo.profile_picture)
     formData.append('user[first_name]', userInfo.first_name)
     formData.append('user[last_name]', userInfo.last_name)
     formData.append('user[birthdate]', userInfo.birthdate)
     formData.append('user[email]', userInfo.email)
     formData.append('user[password]', userInfo.password)
     formData.append('user[password_confirmation]', userInfo.password_confirmation)
-    console.log(formData)
+    formData.append('profile_picture', userInfo.profile_picture)
     const configObj = {
       method: 'POST',
       body: formData
@@ -289,7 +288,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log("App Posts: ", this.state.currentUserPosts)
     return (
       <div id="app-container">
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}

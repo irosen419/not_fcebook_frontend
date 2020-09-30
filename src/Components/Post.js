@@ -67,7 +67,7 @@ export default class Post extends React.Component {
 
 
     render() {
-        // console.log("Looking for deletePost: ", this.props)
+
         return (
             <div className="post">
                 <PostContent

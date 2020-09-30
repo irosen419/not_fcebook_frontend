@@ -12,7 +12,7 @@ function InfoCard(props) {
                 <li>
                     {user.pic_url === "" ? 
                     <img id="friend-list-img" alt="" src="../blank-profile-pic.png" /> :
-                    <img id="friend-list-img" alt="" src={`http://localhost:3000${user.pic_url}`} />
+                    <img id="friend-list-img" alt="" src={user.img_url} />
                     }
                     {user.user_name}
                 </li> 
@@ -23,9 +23,9 @@ function InfoCard(props) {
     return (
         <div id="info-card">
             <div id="about-and-follow">
-                {props.user.pic_url === "" ? 
+                {props.user.img_url === "" ? 
                 <img id="profile" alt="" src="../blank-profile-pic.png" /> :
-                <img id="profile" alt="" src={`http://localhost:3000${props.user.pic_url}`} />
+                <img id="profile" alt="" src={props.user.img_url} />
                 }
                 <h3>About {props.user.first_name}</h3>
                 {nonUserId !== props.user.id ? <button id="follow-button" onClick={props.followOrUnfollow}>{following() ? 'Unfollow' : 'Follow'}</button > : null}
