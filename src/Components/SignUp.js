@@ -7,7 +7,7 @@ export default class SignUp extends React.Component {
     first_name: "",
     last_name: "",
     birthdate: "",
-    profile_picture: null,
+    profile_picture: "",
     email: "",
     password: "",
     password_confirmation: ""
@@ -20,7 +20,6 @@ export default class SignUp extends React.Component {
 
   changeHandler = (e) => {
     e.persist()
-    console.log(e.target.files)
     this.setState(() => ({
       [e.target.name]: e.target.value,
     }))

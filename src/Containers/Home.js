@@ -43,7 +43,6 @@ class Home extends React.Component {
     }
 
     render() {
-        console.log("CurrentPosts: ", this.props.currentUserPosts)
         return (
             <div id="home" >
                 <PostForm

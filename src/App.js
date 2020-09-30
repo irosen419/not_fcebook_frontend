@@ -31,7 +31,6 @@ class App extends React.Component {
       })
         .then(resp => resp.json())
         .then(userData => {
-          console.log(userData)
           this.setState(() => ({
             user: userData.user,
             currentUserPosts: userData.user.posts
@@ -66,14 +65,14 @@ class App extends React.Component {
 
   appSignupHandler = (userInfo) => {
     let formData = new FormData()
+    formData.append('profile_picture', userInfo.profile_picture)
     formData.append('user[first_name]', userInfo.first_name)
     formData.append('user[last_name]', userInfo.last_name)
     formData.append('user[birthdate]', userInfo.birthdate)
-    formData.append('user[profile_picture]', userInfo.profile_picture)
     formData.append('user[email]', userInfo.email)
     formData.append('user[password]', userInfo.password)
     formData.append('user[password_confirmation]', userInfo.password_confirmation)
-
+    console.log(formData)
     const configObj = {
       method: 'POST',
       body: formData
@@ -90,6 +89,7 @@ class App extends React.Component {
         }), () => this.props.history.push(`/profile/${userData.user.id}`))
       })
   }
+
 
   displayHandler = () => {
     this.setState((previousState) => ({ signup: !previousState.signup }))
@@ -205,11 +205,13 @@ class App extends React.Component {
       } else {
         profileUserId = parseInt(window.location.pathname.split('/')[2])
       }
+      console.log('inside new post fetch, profileUserId: ', profileUserId)
       const newPost = {
         content: this.state.content,
         user_id: this.state.user.id,
         profile_user_id: profileUserId
       }
+      console.log('new post', newPost)
       const configObj = {
         method: 'POST',
         headers: {

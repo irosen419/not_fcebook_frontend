@@ -63,8 +63,8 @@ export default class Comment extends React.Component {
                 />
                 {this.state.comment.user_id === this.props.user.id ? 
                     <div >
-                        <button onClick={() => this.props.editComment(this.state.comment)} >Edit Comment</button>
-                        <button onClick={() => this.props.deleteComment(this.state.comment)} >Delete Comment</button>
+                        <button onClick={() => this.props.editComment(this.state.comment)} >Edit</button>
+                        <button onClick={() => this.props.deleteComment(this.state.comment)} >Delete</button>
                     </div>
                     : null } 
             </div>

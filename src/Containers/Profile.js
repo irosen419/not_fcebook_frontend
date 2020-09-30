@@ -9,39 +9,26 @@ class Profile extends React.Component {
 
     state = {
         posts: [],
-        followingArray: []
+        profileUser: "",
+        followingArray: [], 
     }
 
     componentDidMount() {
-        this.postsUserFetch()
+        this.profileUserFetch()
         this.getUsersFollowings()
-        // const configObj = {
-        //     method: 'GET',
-        //     headers: {
-        //         'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        //         'Content-Type': 'application/json',
-        //         'Accepts': 'application/json'
-        //     }
-        // }
-        // fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}/posts`, configObj)
-        //     .then(resp => resp.json())
-        //     .then(data => console.log("Data: ", data))
     }
 
     componentDidUpdate(pP) {
         if (pP.newPost !== this.props.newPost) {
-            console("NewPost Update")
             this.setState((pS) => ({ posts: [this.props.newPost.post, ...pS.posts] }))
         } else if (pP.updatedPost !== this.props.updatedPost) {
-            console("EditPost Update")
             const newArray = this.state.posts.filter(post => post.id !== this.props.updatedPost.post.id)
             this.setState(() => ({ posts: [this.props.updatedPost.post, ...newArray] }))
         }
     }
 
-    postsUserFetch = () => {
+    profileUserFetch = () => {
         const profileId = window.location.pathname.split('/')[2]
-        console.log("Profile Id: ", profileId)
         const configObj = {
             method: 'GET',
             headers: {
@@ -50,12 +37,13 @@ class Profile extends React.Component {
                 'Accepts': 'application/json'
             }
         }
-        fetch(`http://localhost:3000/api/v1/users/${profileId}/posts`, configObj)
+        fetch(`http://localhost:3000/api/v1/users/${profileId}`, configObj)
             .then(resp => resp.json())
-            .then(posts => {
-                console.log("Post fetch: ", posts)
+            .then(user => {
+                console.log(user)
                 this.setState(() => ({
-                    posts: posts.posts
+                    posts: user.user.posts,
+                    profileUser: user.user
                 }))
             })
         // Returns all posts for the user who's ID is passed in with associated likes, comments.
@@ -93,17 +81,18 @@ class Profile extends React.Component {
             }
             // body: {NO BODY}
         }
-
         fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}/followings`, configObj)
             .then(resp => resp.json())
             .then(usersArray => this.setState(() => ({ followingArray: usersArray.followers })))
     }
 
+
+
     render() {
         return (
             <div id="profile">
                 <InfoCard
-                    user={this.props.user}
+                    user={this.state.profileUser}
                     followOrUnfollow={this.props.followOrUnfollow}
                     followingArray={this.state.followingArray}
                     currentUserFollowing={this.props.currentUserFollowing}
@@ -114,7 +103,6 @@ class Profile extends React.Component {
                         changeHandler={this.props.changeHandler}
                         submitHandler={this.props.submitHandler}
                     />
-
                     {this.state.posts ?
                         <PostContainer
                             user={this.props.user}

@@ -86,8 +86,8 @@ export default class Post extends React.Component {
                     />
                     {this.state.post.user_id === this.props.user.id ?
                         <div >
-                            <button onClick={this.edit} >Edit Post</button>
-                            <button onClick={() => this.props.deletePost(this.state.post)} >Delete Post</button>
+                            <button onClick={this.edit} >Edit</button>
+                            <button onClick={() => this.props.deletePost(this.state.post)} >Delete</button>
                         </div>
                         : null}
                 </div>
