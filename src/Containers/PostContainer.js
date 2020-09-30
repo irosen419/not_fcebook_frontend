@@ -18,19 +18,18 @@ export default class PostContainer extends React.Component {
     }
 
     renderPosts = () => {
-        // console.log("Container Posts: ", this.props.posts)
         let posts = this.props.posts
         posts = this.sortByDate(posts)
         return posts.map(post =>
             <Post
                 post={post}
                 key={post.id}
+                deletePost={this.props.deletePost}
                 user={this.props.user}
                 edit={this.props.edit}
                 changeHandler={this.props.changeHandler}
                 submitHandler={this.props.submitHandler}
                 editContent={this.props.editContent}
-                deletePost={this.props.deletePost}
             />
         )
     }

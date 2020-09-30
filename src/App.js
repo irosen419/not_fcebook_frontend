@@ -55,7 +55,7 @@ class App extends React.Component {
     fetch('http://localhost:3000/api/v1/login', configObj)
       .then(resp => resp.json())
       .then(userData => {
-        
+
         localStorage.setItem("token", userData.jwt);
         localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
@@ -69,11 +69,11 @@ class App extends React.Component {
     formData.append('user[first_name]', userInfo.first_name)
     formData.append('user[last_name]', userInfo.last_name)
     formData.append('user[birthdate]', userInfo.birthdate)
-    formData.append('user[profile_picture]', userInfo.profile_picture)
+    formData.append('profile_picture', userInfo.profile_picture)
     formData.append('user[email]', userInfo.email)
     formData.append('user[password]', userInfo.password)
     formData.append('user[password_confirmation]', userInfo.password_confirmation)
-
+    console.log(formData)
     const configObj = {
       method: 'POST',
       body: formData
@@ -171,6 +171,7 @@ class App extends React.Component {
   }
 
   submitHandler = () => {
+    console.log("submitting")
     if (this.state.editPostObj) {
       // -- EDIT POST FETCH -- //
       const newPost = {
@@ -189,16 +190,24 @@ class App extends React.Component {
       fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
         .then(resp => resp.json())
         .then(updatedPost => {
-
-          this.setState(() => ({
-            updatedPost: updatedPost,
-            editContent: "",
-            editPostObj: ""
-          }), this.setState(() => ({ updatedPost: "" })))
+          if (window.location.pathname.split('/')[1] === 'home') {
+            console.log("edited from home")
+            let newArray = this.state.currentUserPosts
+            let foundPost = newArray.find(post => post.id === updatedPost.post.id)
+            newArray[newArray.indexOf(foundPost)] = updatedPost.post
+            this.setState(() => ({ currentUserPosts: newArray }))
+          } else {
+            this.setState(() => ({
+              updatedPost: updatedPost,
+              editContent: "",
+              editPostObj: ""
+            }), this.setState(() => ({ updatedPost: "" })))
+          }
         })
 
     } else {
       // -- NEW POST FETCH -- //
+
       let profileUserId
       if (window.location.pathname.split('/')[1] === 'home') {
         profileUserId = this.state.user.id
@@ -239,13 +248,46 @@ class App extends React.Component {
   }
 
   edit = (postObj) => {
+    console.log("edit obj: ", postObj)
     this.setState(() => ({
       editContent: postObj.content,
       editPostObj: postObj
     }))
   }
 
+  appDeletePost = (postObj) => {
+    console.log("deleting post")
+    const configObj = {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: JSON.stringify({ id: postObj.id, post: postObj })
+    }
+    fetch(`http://localhost:3000/api/v1/posts/${postObj.id}`, configObj)
+      .then(resp => resp.json())
+      .then(emptyObj => {
+        // if (!emptyObj.id) {
+        //   const newArray = this.state.posts.filter(post => post.id !== postObj.id)
+        //   this.setState(() => ({
+        //     posts: newArray
+        //   }))
+        // }
+        if (window.location.pathname.split('/')[1] === 'home') {
+          const newArray = this.state.currentUserPosts.filter(post => post.id !== postObj.id)
+          this.setState(() => ({
+            currentUserPosts: newArray
+          }))
+        }
+      })
+
+
+  }
+
   render() {
+    console.log("App Posts: ", this.state.currentUserPosts)
     return (
       <div id="app-container">
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}
@@ -266,6 +308,7 @@ class App extends React.Component {
                   submitHandler={this.submitHandler}
                   content={this.state.content}
                   editContent={this.state.editContent}
+                  appDeletePost={this.appDeletePost}
                   newPost={this.state.newPost}
                   updatedPost={this.state.updatedPost}
                 />
@@ -286,6 +329,7 @@ class App extends React.Component {
                   edit={this.edit}
                   editContent={this.state.editContent}
                   content={this.state.content}
+                  appDeletePost={this.appDeletePost}
                 />
                 : null
             }}

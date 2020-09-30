@@ -7,10 +7,6 @@ import '../Css/Post.css'
 
 class Home extends React.Component {
 
-    state = {
-        postEditor: true
-    }
-
     sortByDate = (array) => {
         return array.sort((a, b) => {
             if (a.created_at > b.created_at) return -1;
@@ -38,6 +34,7 @@ class Home extends React.Component {
                 editContent={this.props.editContent}
                 edit={this.props.edit}
                 user={this.props.user}
+                deletePost={this.props.appDeletePost}
             />
         )
     }
@@ -49,9 +46,9 @@ class Home extends React.Component {
                 <PostForm
                     content={this.props.content}
                     changeHandler={this.props.changeHandler}
-                    postEditor={this.postEditor}
+                    submitHandler={this.props.submitHandler}
                 />
-                {this.props.followingArray.length > 0 ? this.renderFollowingsPosts() : <h2>LOADING...</h2>}
+                {this.props.currentUserPosts.length > 0 ? this.renderFollowingsPosts() : <h4>You need to create some posts or follow some users before you can see anything here...</h4>}
             </div>
         )
     }
