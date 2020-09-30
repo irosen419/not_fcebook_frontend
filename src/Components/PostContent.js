@@ -18,13 +18,16 @@ class PostContent extends React.Component {
         return (
             <>
                 <div className="post-header">
-                    <h3 onClick={this.clickHandler}>
-                        Posted by
-                        <Link to={`/profile/${this.props.post.user_id}`} >
-                            {this.props.post.user_name}
-                        </Link>
+                    <a href={`http://localhost:3001/profile/${this.props.post.user_id}`} >
+                    {this.props.post.post_user_url === "" ? 
+                        <img id="post" alt="Alt" src="../blank-profile-pic.png" /> :
+                        <img id="post" alt="" src={`http://localhost:3000${this.props.post.post_user_url}`} />
+                        }
+                        <h3 onClick={this.clickHandler}>
+                                {this.props.post.user_name}
+                        </h3>
+                    </a>
                         at {this.props.post.time}
-                    </h3>
                 </div>
                 <div className="post-content">
                     {!this.props.clicked ?

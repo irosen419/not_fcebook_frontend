@@ -9,11 +9,12 @@ class Profile extends React.Component {
 
     state = {
         posts: [],
-        followingArray: []
+        profileUser: "",
+        followingArray: [], 
     }
 
     componentDidMount() {
-        this.postsUserFetch()
+        this.profileUserFetch()
         this.getUsersFollowings()
     }
 
@@ -26,9 +27,8 @@ class Profile extends React.Component {
         }
     }
 
-    postsUserFetch = () => {
+    profileUserFetch = () => {
         const profileId = window.location.pathname.split('/')[2]
-        console.log("Profile Id: ", profileId)
         const configObj = {
             method: 'GET',
             headers: {
@@ -37,12 +37,13 @@ class Profile extends React.Component {
                 'Accepts': 'application/json'
             }
         }
-        fetch(`http://localhost:3000/api/v1/users/${profileId}/posts`, configObj)
+        fetch(`http://localhost:3000/api/v1/users/${profileId}`, configObj)
             .then(resp => resp.json())
-            .then(posts => {
-                console.log("Post fetch: ", posts)
+            .then(user => {
+                console.log(user)
                 this.setState(() => ({
-                    posts: posts.posts
+                    posts: user.user.posts,
+                    profileUser: user.user
                 }))
             })
         // Returns all posts for the user who's ID is passed in with associated likes, comments.
@@ -66,17 +67,18 @@ class Profile extends React.Component {
             }
             // body: {NO BODY}
         }
-
         fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}/followings`, configObj)
             .then(resp => resp.json())
             .then(usersArray => this.setState(() => ({ followingArray: usersArray.followers })))
     }
 
+
+
     render() {
         return (
             <div id="profile">
                 <InfoCard
-                    user={this.props.user}
+                    user={this.state.profileUser}
                     followOrUnfollow={this.props.followOrUnfollow}
                     followingArray={this.state.followingArray}
                     currentUserFollowing={this.props.currentUserFollowing}
@@ -87,7 +89,6 @@ class Profile extends React.Component {
                         changeHandler={this.props.changeHandler}
                         submitHandler={this.props.submitHandler}
                     />
-
                     {this.state.posts ?
                         <PostContainer
                             user={this.props.user}

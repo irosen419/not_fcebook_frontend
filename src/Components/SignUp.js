@@ -20,7 +20,6 @@ export default class SignUp extends React.Component {
 
   changeHandler = (e) => {
     e.persist()
-    console.log(e.target.files)
     this.setState(() => ({
       [e.target.name]: e.target.value,
     }))

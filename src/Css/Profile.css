@@ -48,3 +48,16 @@
 #user-info p {
     margin-top: 1%;
 }
+
+img#profile {
+    max-height: 200px;
+    width: auto;
+}
+img#friend-list-img{
+    max-height: 20px;
+    width: auto;
+}
+img#post {
+    max-height: 30px;
+    width: auto;
+}
