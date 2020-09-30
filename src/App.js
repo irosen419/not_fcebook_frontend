@@ -6,7 +6,6 @@ import SignUp from './Components/SignUp'
 import Profile from './Containers/Profile'
 import Home from './Containers/Home'
 import Header from './Containers/Header'
-// import TestFetch from './Components/TestFetch';
 import './Css/App.css';
 
 class App extends React.Component {
@@ -14,7 +13,13 @@ class App extends React.Component {
   state = {
     user: "",
     signup: false,
-    followingArray: []
+    followingArray: [],
+    currentUserPosts: [],
+    content: "",
+    editContent: "",
+    editPostObj: null,
+    newPost: "",
+    updatedPost: ""
   }
 
   componentDidMount() {
@@ -26,7 +31,11 @@ class App extends React.Component {
       })
         .then(resp => resp.json())
         .then(userData => {
-          this.setState(() => ({ user: userData.user }), () => this.getUsersFollowings())
+          console.log(userData)
+          this.setState(() => ({
+            user: userData.user,
+            currentUserPosts: userData.user.posts
+          }), () => this.getUsersFollowings())
         })
     } else {
       this.props.history.push('/login')
@@ -66,6 +75,7 @@ class App extends React.Component {
     fetch('http://localhost:3000/api/v1/users', configObj)
       .then(resp => resp.json())
       .then(userData => {
+
         localStorage.setItem("token", userData.jwt);
         localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
@@ -103,9 +113,7 @@ class App extends React.Component {
         'Content-type': 'application/json',
         'Accepts': 'application/json'
       }
-      // body: {NO BODY}
     }
-
     fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/followings`, configObj)
       .then(resp => resp.json())
       .then(usersArray => this.setState(() => ({ followingArray: usersArray.followers })))
@@ -156,6 +164,81 @@ class App extends React.Component {
     //Returns the current user with no followers or followings associations
   }
 
+  submitHandler = () => {
+    if (this.state.editPostObj) {
+      // -- EDIT POST FETCH -- //
+      const newPost = {
+        content: this.state.editContent,
+        user_id: this.state.user.id
+      }
+      const configObj = {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json',
+          'Accepts': 'application/json'
+        },
+        body: JSON.stringify({ post: newPost })
+      }
+      fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
+        .then(resp => resp.json())
+        .then(updatedPost => {
+
+          this.setState(() => ({
+            updatedPost: updatedPost,
+            editContent: "",
+            editPostObj: ""
+          }), this.setState(() => ({ updatedPost: "" })))
+        })
+
+    } else {
+      // -- NEW POST FETCH -- //
+      let profileUserId
+      if (window.location.pathname.split('/')[1] === 'home') {
+        profileUserId = this.state.user.id
+      } else {
+        profileUserId = parseInt(window.location.pathname.split('/')[2])
+      }
+      const newPost = {
+        content: this.state.content,
+        user_id: this.state.user.id,
+        profile_user_id: profileUserId
+      }
+      const configObj = {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json',
+          'Accepts': 'application/json'
+        },
+        body: JSON.stringify({ post: newPost })
+      }
+      fetch(`http://localhost:3000/api/v1/posts/`, configObj)
+        .then(resp => resp.json())
+        .then(postObj => {
+          this.setState(() => ({
+            currentUserPosts: [...this.state.currentUserPosts, postObj.post],
+            newPost: postObj,
+            content: ""
+          }))
+        })
+    }
+  }
+
+  changeHandler = (e) => {
+    e.persist()
+    this.setState(() => ({
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  edit = (postObj) => {
+    this.setState(() => ({
+      editContent: postObj.content,
+      editPostObj: postObj
+    }))
+  }
+
   render() {
     return (
       <div id="app-container">
@@ -172,6 +255,13 @@ class App extends React.Component {
                   appLogout={this.appLogout}
                   currentUserFollowing={this.state.followingArray}
                   followOrUnfollow={this.followOrUnfollow}
+                  edit={this.edit}
+                  changeHandler={this.changeHandler}
+                  submitHandler={this.submitHandler}
+                  content={this.state.content}
+                  editContent={this.state.editContent}
+                  newPost={this.state.newPost}
+                  updatedPost={this.state.updatedPost}
                 />
                 : null
             }}
@@ -183,7 +273,13 @@ class App extends React.Component {
                 <Home
                   user={this.state.user}
                   followingArray={this.state.followingArray}
+                  currentUserPosts={this.state.currentUserPosts}
                   appLogout={this.appLogout}
+                  changeHandler={this.changeHandler}
+                  submitHandler={this.submitHandler}
+                  edit={this.edit}
+                  editContent={this.state.editContent}
+                  content={this.state.content}
                 />
                 : null
             }}

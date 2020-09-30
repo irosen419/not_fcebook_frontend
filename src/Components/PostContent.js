@@ -14,31 +14,31 @@ class PostContent extends React.Component {
     }
 
 
-    render(){
+    render() {
         return (
             <>
                 <div className="post-header">
                     <h3 onClick={this.clickHandler}>
-                        Posted by 
+                        Posted by
                         <Link to={`/profile/${this.props.post.user_id}`} >
                             {this.props.post.user_name}
                         </Link>
-                        at {this.props.post.created_at}
+                         at {this.props.post.created_at}
                     </h3>
                 </div>
                 <div className="post-content">
-                    { !this.props.clicked ? 
-                    this.props.post.content : 
-                    <div>
-                        <form onSubmit={this.submit}>
-                            <input 
-                                type="text" 
-                                name="editContent"
-                                value={this.props.editContent}
-                                onChange={this.props.changeHandler}
-                            />
-                        </form>
-                    </div> }
+                    {!this.props.clicked ?
+                        this.props.post.content :
+                        <div>
+                            <form onSubmit={this.submit}>
+                                <input
+                                    type="text"
+                                    name="editContent"
+                                    value={this.props.editContent}
+                                    onChange={this.props.changeHandler}
+                                />
+                            </form>
+                        </div>}
                 </div>
             </>
         )

@@ -8,7 +8,7 @@ export default class Post extends React.Component {
 
     state = {
         post: this.props.post,
-        likes: this.props.post.post_likes.length > 0 ? this.props.post.post_likes : [],
+        likes: this.props.post.post_likes ? this.props.post.post_likes : [],
         clicked: false
     }
 
@@ -53,13 +53,13 @@ export default class Post extends React.Component {
 
     edit = () => {
         this.props.edit(this.props.post)
-        this.setState(()=>({
+        this.setState(() => ({
             clicked: true
         }))
     }
     editSubmit = () => {
         this.props.submitHandler()
-        this.setState(()=>({
+        this.setState(() => ({
             clicked: false
         }))
     }
@@ -69,7 +69,7 @@ export default class Post extends React.Component {
     render() {
         return (
             <div className="post">
-                <PostContent 
+                <PostContent
                     post={this.props.post}
                     clicked={this.state.clicked}
                     changeHandler={this.props.changeHandler}
@@ -77,23 +77,23 @@ export default class Post extends React.Component {
                     editContent={this.props.editContent}
                 />
                 <div className="post-wrapper" >
-                    <Like 
-                        user={this.props.user} 
-                        post={this.props.post} 
-                        likes={this.state.likes} 
-                        postAddLike={this.postAddLike} 
-                        postRemoveLike={this.postRemoveLike} 
+                    <Like
+                        user={this.props.user}
+                        post={this.props.post}
+                        likes={this.state.likes}
+                        postAddLike={this.postAddLike}
+                        postRemoveLike={this.postRemoveLike}
                     />
-                    {this.state.post.user_id === this.props.user.id ? 
-                    <div >
-                        <button onClick={this.edit} >Edit Post</button>
-                        <button onClick={() => this.props.deletePost(this.state.post)} >Delete Post</button>
-                    </div>
-                    : null }
+                    {this.state.post.user_id === this.props.user.id ?
+                        <div >
+                            <button onClick={this.edit} >Edit Post</button>
+                            <button onClick={() => this.props.deletePost(this.state.post)} >Delete Post</button>
+                        </div>
+                        : null}
                 </div>
-                <CommentContainer 
-                    user={this.props.user} 
-                    post={this.props.post} 
+                <CommentContainer
+                    user={this.props.user}
+                    post={this.props.post}
                 />
             </div>
         )

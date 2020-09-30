@@ -1,5 +1,50 @@
 #profile {
+    display: flex;
+    justify-content: center;
     min-height: 100%;
     overflow-y: hidden;
     overflow: scroll;
+}
+
+#profile #posts {
+    margin-left: 5%;
+}
+
+#profile #info-card {
+    max-height: 50vh;
+    width: 25%;
+    margin-top: 3.5vh;
+    border-style: none;
+
+    border-radius: 10px;
+    background-color: white;
+
+    box-shadow: .5px 1px 3px grey;
+
+}
+
+#about-and-follow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10%;
+    margin-left: 10%;
+}
+#follow-button {
+    margin-right: 10%;
+}
+
+#user-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    text-align: left;
+}
+
+#user-info h4 {
+    margin-top: 5%;
+    margin-bottom: 5%
+}
+
+#user-info p {
+    margin-top: 1%;
 }
