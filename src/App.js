@@ -68,14 +68,15 @@ class App extends React.Component {
       body: formData
     }
     fetch('http://localhost:3000/api/v1/users', configObj)
-      .then(resp => console.log(resp))
-        
-        // localStorage.setItem("token", userData.jwt);
-        // localStorage.setItem("userId", userData.user.id);
-        // this.setState(() => ({
-        //   user: userData.user,
-        //   signup: false
-        // }), () => this.props.history.push(`/profile/${userData.user.id}`))
+      .then(resp => resp.json())
+      .then(userData => {
+        localStorage.setItem("token", userData.jwt);
+        localStorage.setItem("userId", userData.user.id);
+        this.setState(() => ({
+          user: userData.user,
+          signup: false
+        }), () => this.props.history.push(`/profile/${userData.user.id}`))
+      })
   }
 
   displayHandler = () => {
