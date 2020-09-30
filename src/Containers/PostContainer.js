@@ -8,13 +8,24 @@ export default class PostContainer extends React.Component {
         this.renderPosts()
     }
 
+    sortByDate = (array) => {
+        return array.sort((a, b) => {
+            if (a.created_at > b.created_at) return -1;
+            if (a.created_at < b.created_at) return 1;
+            return 0;
+        });
+
+    }
+
     renderPosts = () => {
+        // console.log("Container Posts: ", this.props.posts)
         let posts = this.props.posts
-        return posts.map(post => 
-            <Post 
+        posts = this.sortByDate(posts)
+        return posts.map(post =>
+            <Post
                 post={post}
-                key={post.id} 
-                user={this.props.user} 
+                key={post.id}
+                user={this.props.user}
                 edit={this.props.edit}
                 changeHandler={this.props.changeHandler}
                 submitHandler={this.props.submitHandler}
