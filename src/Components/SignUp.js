@@ -7,7 +7,7 @@ export default class SignUp extends React.Component {
     first_name: "",
     last_name: "",
     birthdate: "",
-    profile_picture: null,
+    profile_picture: "",
     email: "",
     password: "",
     password_confirmation: ""

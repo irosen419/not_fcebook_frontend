@@ -6,9 +6,7 @@ export default function PostForm(props) {
 
     const submit = (e) => {
         e.preventDefault()
-        if (props.postEditor) {
-            props.postEditor()
-        }
+        props.submitHandler()
     }
 
     return (
