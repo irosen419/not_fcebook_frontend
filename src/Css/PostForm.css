@@ -46,6 +46,12 @@
     font-size: large;
 }
 
+
+.preview {
+    max-height: 40px;
+    width: auto;
+}
+
 #post-form button {
     height: 20%;
     margin: 10px;

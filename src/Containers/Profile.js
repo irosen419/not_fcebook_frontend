@@ -12,7 +12,8 @@ class Profile extends React.Component {
         profileUser: "",
         profileFriends: [],
         content: "",
-        post_photo: null,
+        post_photo: [],
+        post_photoURL: [],
         editContent: "",
         editPostObj: null,
     }
@@ -35,7 +36,6 @@ class Profile extends React.Component {
         fetch(`http://localhost:3000/api/v1/users/${profileId}/profile`, configObj)
             .then(resp => resp.json())
             .then(profile => {
-                console.log(profile)
                 this.setState(() => ({
                     posts: profile.posts,
                     profileUser: profile.user,
@@ -79,41 +79,26 @@ class Profile extends React.Component {
             formData.append('post[content]', this.state.content)
             formData.append('post[user_id]', this.props.user.id)
             formData.append('post[profile_user_id]', this.state.profileUser.id)
-            formData.append('post_photo', this.state.post_photo)
+            const files = this.state.post_photo;
+            for (let i = 0; i < files.length; i++) {
+                formData.append(`post_photo[${i}]`, files[i])
+            }
             const configObj = {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
                 body: formData
             }
-            console.log(configObj)
             fetch(`http://localhost:3000/api/v1/posts/`, configObj)
-                .then(resp => resp.json())
-                .then(postObj => {
-                    console.log(postObj)
-                    this.setState(() => ({
-                        posts: [postObj.post, ...this.state.posts],
-                        content: "",
-                        post_photo: null
-                    }))
-                })
-
-
-
-            // const newPost = {
-            // content: this.state.content,
-            // user_id: this.props.user.id,
-            // profile_user_id: this.state.profileUser.id
-            // }
-            // const configObj = {
-            // method: 'POST',
-            // headers: {
-            //     'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            //     'Content-Type': 'application/json',
-            //     'Accepts': 'application/json'
-            // },
-            // body: JSON.stringify({ post: newPost })
-            // }
-
+            .then(resp => resp.json())
+            .then(postObj => {
+                console.log(postObj)
+                this.setState(() => ({
+                    posts: [postObj.post, ...this.state.posts],
+                    content: "",
+                    post_photo: [],
+                    post_photoURL: []
+                }))
+            })
         }
 
     }
@@ -125,10 +110,28 @@ class Profile extends React.Component {
     }
     pictureHandler = (e) => {
         e.persist()
-        if (e.target.files[0]) {
-            this.setState({ post_photo: e.target.files[0] })
+        let fileArray = []
+        let i = 0;
+        while (i < e.target.files.length){
+            fileArray.push(e.target.files[i])
+            i++
         }
-    }
+        for (const file of fileArray){
+            const fileReader = new FileReader()
+            fileReader.readAsDataURL(file)
+            fileReader.onloadend = () =>{
+                this.setState(()=>({
+                    post_photoURL: [fileReader.result, ... this.state.post_photoURL]
+                }))
+            }
+        }
+
+            this.setState(()=> ({ 
+                post_photo: [fileArray, ...this.state.post_photo].flat()
+            }))
+        
+    }    
+
 
     edit = (postObj) => {
         console.log("edit obj: ", postObj)
@@ -219,6 +222,7 @@ class Profile extends React.Component {
     }
 
     render() {
+        console.log(this.state.post_photoURL)
         return (
             <div id="profile">
                 <InfoCard
@@ -233,6 +237,7 @@ class Profile extends React.Component {
                         pictureHandler={this.pictureHandler}
                         changeHandler={this.changeHandler}
                         submitHandler={this.submitHandler}
+                        preview={this.state.post_photoURL}
                     />
                     {this.state.posts ?
                         <PostContainer

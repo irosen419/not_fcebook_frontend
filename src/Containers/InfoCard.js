@@ -22,7 +22,6 @@ function InfoCard(props) {
     }
 
 
-    console.log(props)
     return (
         <div id="info-card">
             <div id="about-and-follow">

@@ -18,11 +18,19 @@ export default class PostForm extends React.Component {
         this.setState((previousState) => ({ photoInput: !previousState.photoInput }))
     }
 
+    renderPreview = () => {
+        return this.props.preview.map(photo => <img key={""} className="preview" alt="" src={photo} /> )
+    }
+
     showPhotoInput = () => {
         return (
             this.state.photoInput ?
+                <div id="preview-div">
+                    {this.props.preview.length > 0 ? this.renderPreview() : null}
+                </div>
                 <input
                     type="file"
+                    multiple
                     name="post_photo"
                     accept="image/*"
                     onChange={this.props.pictureHandler}
