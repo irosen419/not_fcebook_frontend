@@ -32,6 +32,9 @@ class PostContent extends React.Component {
                     {this.props.post.time}
                 </div>
                 <div className="post-content">
+                    {this.props.post.photos.length > 0 ?
+                        <img className="post-photo" alt="" src={this.props.post.photos[0].img_url} /> 
+                        : null}
                     {!this.props.clicked ?
                         this.props.post.content :
                         <div>
