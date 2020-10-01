@@ -18,7 +18,7 @@ img {
   object-fit: cover;
 }
 
-input {
+input[type="text"] {
   padding-left: 5%;
 }
 
@@ -38,7 +38,11 @@ input {
 }
 
 #photo-modal span {
-  color: white;
+  color: rgb(145, 127, 127);
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: whitesmoke;
   font-size: xx-large;
   position: absolute;
   top: 25px;
@@ -47,7 +51,10 @@ input {
 
 #photo-modal img {
   border-radius: 0;
+  object-fit: none;
   width: auto;
+
+  z-index: 2;
 }
 
 /* 

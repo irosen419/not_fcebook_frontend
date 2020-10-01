@@ -107,11 +107,11 @@ class App extends React.Component {
   }
 
   showOrHideModal = (photoArray) => {
-    // console.log("Photo Array: ", photoArray)
     this.setState((previousState) => ({ photoModal: !previousState.photoModal, photoArray: photoArray }))
   }
 
   render() {
+    console.log("Photo modal: ", this.state.photoModal)
     return (
       <div id="app-container">
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}
