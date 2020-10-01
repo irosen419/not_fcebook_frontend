@@ -2,3 +2,8 @@
     display: flex;
     margin-right: 10px;
 }
+
+.like-component button {
+    background: none;
+    font-size: x-large;
+}

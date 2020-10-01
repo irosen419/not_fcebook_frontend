@@ -15,7 +15,7 @@ div#signup-modal {
 }
 
 div#signup {
-    width: 15%;
+    width: 30%;
     padding: 12px;
 
     border-radius: 5%;
@@ -33,7 +33,7 @@ div#signup form#signup-form {
 
 div#signup input {
     font-size: medium;
-    height: 36px;
+    height: 48px;
 
     margin: 8px;
 

@@ -40,7 +40,7 @@ export default class Login extends React.Component {
 
             <div id="welcome">
                 <div id="title-lines">
-                    <h1>not Facebook</h1>
+                    <h1>! facebook</h1>
                     <h3>Our Tagline</h3>
                 </div>
                 <div id="login">
@@ -49,6 +49,7 @@ export default class Login extends React.Component {
                         <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
                         <input type="submit" value="Log In" onClick={this.submitHandler} />
                     </form>
+                    {this.props.error ? <p>Please enter a valid Email and/or Password</p> : null}
                     <div id="not-a-member">
                         <p>Not a member?</p>
                         <button id="signup-from-login" onClick={this.clickHandler}>Sign Up</button>

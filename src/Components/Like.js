@@ -23,7 +23,7 @@ export default class Like extends React.Component {
 
     addLike = () => {
         if (this.props.postAddLike) {
-            this.props.postAddLike({ user_id: this.props.user.id , post_id: this.props.post.id })
+            this.props.postAddLike({ user_id: this.props.user.id, post_id: this.props.post.id })
         } else if (this.props.commentAddLike) {
             this.props.commentAddLike({ user_id: this.props.user.id, comment_id: this.props.comment.id })
         }
@@ -39,7 +39,7 @@ export default class Like extends React.Component {
     render() {
         return (
             <div className="like-component">
-                <button onClick={this.likeHandler}>{this.renderButton() ? 'Like' : 'Unlike'}</button>
+                <button className="like-button" onClick={this.likeHandler}>{this.renderButton() ? '👍' : '👎'}</button>
                 <span>{this.props.likes.length} likes</span>
             </div>
         )

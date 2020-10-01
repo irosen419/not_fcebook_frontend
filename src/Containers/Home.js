@@ -39,6 +39,7 @@ class Home extends React.Component {
 
     sortByDate = (array) => {
         return array.sort((a, b) => {
+            console.log("A: ", a.created_at, "B: ", b.created_at)
             if (a.created_at > b.created_at) return -1;
             if (a.created_at < b.created_at) return 1;
             return 0;
@@ -165,6 +166,7 @@ class Home extends React.Component {
                     submitHandler={this.submitHandler}
                 />
                 {this.state.homePosts.length > 0 ? this.renderPosts() : <h4>Loading...</h4>}
+                //<h4>You need to create some posts or follow some users before you can see anything here...</h4>
             </div>
         )
     }

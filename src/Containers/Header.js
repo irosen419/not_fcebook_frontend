@@ -12,9 +12,9 @@ function Header(props) {
     }
     return (
         <div id="header">
-            <Link to={'/home'}><button id="home-button">not Facebook</button></Link>
+            <Link to={'/home'}><button id="home-button">! facebook</button></Link>
             <SearchForm formClickHandler={props.formClickHandler} />
-            <Link to={`/profile/${props.user.id}`}><button id="profile-button" onClick={clickHandler}>My Profile</button></Link>
+            <a href={`/profile/${props.user.id}`}><img id="profile-button" onClick={clickHandler} alt="Alt" src={require("../Components/blank-profile-pic.png")} /></a>
             <button id="logout-button" onClick={props.appLogout}>Log Out</button>
         </div>
     )

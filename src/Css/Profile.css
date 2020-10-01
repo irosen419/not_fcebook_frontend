@@ -1,17 +1,20 @@
 #profile {
     display: flex;
     justify-content: center;
+    margin: auto;
     min-height: 100%;
     overflow-y: hidden;
     overflow: scroll;
 }
 
 #profile #posts {
-    margin-left: 5%;
+    margin-left: 10%;
+    min-width: 35%;
+    max-width: 35%;
 }
 
 #profile #info-card {
-    max-height: 50vh;
+    height: fit-content;
     width: 25%;
     margin-top: 3.5vh;
     border-style: none;
@@ -25,10 +28,15 @@
 
 #about-and-follow {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     margin-top: 10%;
     margin-left: 10%;
 }
+
+#about-and-follow h2 {
+    margin-right: auto;
+}
+
 #follow-button {
     margin-right: 10%;
 }
@@ -49,15 +57,35 @@
     margin-top: 1%;
 }
 
+
+#profile ul {
+    list-style-type: none;
+}
+
+li {
+    margin-left: 0;
+    max-width: 50%;
+    margin-top: 5%;
+
+    display: flex;
+    align-items: center;
+    font-size: large;
+}
+
 img#profile {
-    max-height: 200px;
+    max-height: 100px;
     width: auto;
+    min-width: 100px;
 }
-img#friend-list-img{
-    max-height: 20px;
+
+img#friend-list-img {
+    max-height: 25px;
     width: auto;
+    margin-right: 5%;
 }
+
 img#post {
     max-height: 30px;
     width: auto;
+    margin-right: 5%;
 }

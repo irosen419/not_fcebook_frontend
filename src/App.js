@@ -12,7 +12,8 @@ class App extends React.Component {
 
   state = {
     user: "",
-    signup: false
+    signup: false,
+    error: false
   }
 
   componentDidMount() {
@@ -52,6 +53,7 @@ class App extends React.Component {
           user: userData.user
         }), () => this.props.history.push(`/home`))
       })
+      .catch(() => this.setState(() => ({ error: true })))
   }
 
   appSignupHandler = (userInfo) => {
@@ -70,14 +72,15 @@ class App extends React.Component {
     fetch('http://localhost:3000/api/v1/users', configObj)
       .then(resp => resp.json())
       .then(userData => {
-        console.log(userData)
         localStorage.setItem("token", userData.jwt);
         localStorage.setItem("userId", userData.user.id);
         this.setState(() => ({
           user: userData.user,
-          signup: false
+          signup: false,
+          error: false
         }), () => this.props.history.push(`/profile/${userData.user.id}`))
       })
+      .catch(() => this.setState(() => ({ error: true })))
   }
 
   displayHandler = () => {
@@ -152,7 +155,7 @@ class App extends React.Component {
     return (
       <div id="app-container">
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}
-        {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} /> : null}
+        {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} error={this.state.error} /> : null}
         <Switch>
 
           <Route
@@ -183,6 +186,7 @@ class App extends React.Component {
               <Login
                 appLoginHandler={this.appLoginHandler}
                 displayHandler={this.displayHandler}
+                error={this.state.error}
               />}
           />
 

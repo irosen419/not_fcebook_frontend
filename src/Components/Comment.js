@@ -21,13 +21,12 @@ export default class Comment extends React.Component {
         }
         fetch(`http://localhost:3000/api/v1/posts/${this.state.comment.post_id}/comments/${this.state.comment.id}/like`, configObj)
             .then(resp => resp.json())
-            .then(comment => { 
-                console.log(comment)
+            .then(comment => {
                 this.setState(() => ({
                     comment: comment.comment,
                     likes: comment.comment.comment_likes
                 }))
-        })
+            })
         // Returns the comment that was liked, with all comment_likes associated with it.
     }
 
@@ -56,21 +55,25 @@ export default class Comment extends React.Component {
         console.log(this.props.comment)
         return (
             <div className="comment" >
-                <strong><p>{this.props.comment.user_name}:</p></strong>
-                <p>{this.props.comment.content}</p>
-                <Like 
-                    likes={this.state.likes} 
-                    user={this.props.user} 
-                    comment={this.state.comment} 
-                    commentAddLike={this.commentAddLike} 
-                    commentRemoveLike={this.commentRemoveLike} 
-                />
-                {this.state.comment.user_id === this.props.user.id ? 
-                    <div >
-                        <button onClick={() => this.props.editComment(this.state.comment)} >Edit</button>
-                        <button onClick={() => this.props.deleteComment(this.state.comment)} >Delete</button>
-                    </div>
-                    : null } 
+                <div className="comment-words">
+                    <strong><p className="comment-username">{this.props.comment.user_name}:</p></strong>
+                    <p className="comment-content">{this.props.comment.content}</p>
+                </div>
+                <div className="right">
+                    <Like
+                        likes={this.state.likes}
+                        user={this.props.user}
+                        comment={this.state.comment}
+                        commentAddLike={this.commentAddLike}
+                        commentRemoveLike={this.commentRemoveLike}
+                    />
+                    {this.state.comment.user_id === this.props.user.id ?
+                        <div className="buttons" >
+                            <button className="comment-edit edit" onClick={() => this.props.editComment(this.state.comment)} >Edit</button>
+                            <button className="comment-delete delete" onClick={() => this.props.deleteComment(this.state.comment)} >Delete</button>
+                        </div>
+                        : null}
+                </div>
             </div>
         )
     }

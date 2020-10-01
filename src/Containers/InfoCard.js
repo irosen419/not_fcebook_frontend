@@ -8,18 +8,18 @@ function InfoCard(props) {
     }
     const friends = () => {
         return props.profileFriends.map(user => {
-            return  <a href={`http://localhost:3001/profile/${user.id}`} >
+            return <a href={`http://localhost:3001/profile/${user.id}`} >
                 <li>
-                    {user.pic_url === "" ? 
-                    <img id="friend-list-img" alt="" src="../blank-profile-pic.png" /> :
-                    <img id="friend-list-img" alt="" src={user.img_url} />
+                    {user.pic_url === "" ?
+                        <img id="friend-list-img" alt="" src={require("../Components/blank-profile-pic.png")} /> :
+                        <img id="friend-list-img" alt="" src={user.img_url} />
                     }
                     {user.user_name}
-                </li> 
+                </li>
             </a>
         })
     }
-    
+
     return (
         <div id="info-card">
             <div id="about-and-follow">
@@ -27,7 +27,7 @@ function InfoCard(props) {
                 <img id="profile" alt="" src={img} /> :
                 <img id="profile" alt="" src={props.profileUser.img_url} />
                 }
-                <h3>About {props.profileUser.first_name}</h3>
+                <h2>About {props.profileUser.first_name}</h2>
                 {props.profileUser.id !== props.currentUser.id ? 
                     <button id="follow-button" onClick={props.followOrUnfollow}>
                         {following().includes(props.currentUser.id) ? 'Unfollow' : 'Follow'}
