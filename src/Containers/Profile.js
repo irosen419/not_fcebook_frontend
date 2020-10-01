@@ -10,7 +10,7 @@ class Profile extends React.Component {
     state = {
         posts: [],
         profileUser: "",
-        followingArray: [], 
+        followingArray: [],
     }
 
     componentDidMount() {
@@ -78,6 +78,7 @@ class Profile extends React.Component {
         return (
             <div id="profile">
                 <InfoCard
+                    currentUser={this.props.user}
                     user={this.state.profileUser}
                     followOrUnfollow={this.props.followOrUnfollow}
                     followingArray={this.state.followingArray}

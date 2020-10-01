@@ -1,10 +1,18 @@
 .post-content {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 0px 5px 15px;
     font-size: .9375rem;
+    text-align: left;
 }
 
 .post-header {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
 }
+
+.post-header a {
+    display: flex;
+    align-items: center;
+    margin-left: 10%;
+    min-width: 50%;
+}
+

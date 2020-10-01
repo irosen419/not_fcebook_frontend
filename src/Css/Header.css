@@ -4,8 +4,8 @@
     height: 10vh;
 
     position: relative;
-
-    background-color: blue;
+    
+    background-color: #0077b6;
 }
 
 button#logout-button, #profile-button, button#home-button {
@@ -13,6 +13,10 @@ button#logout-button, #profile-button, button#home-button {
     height: 40%;
     top: 30%;
     font-size: large;
+}
+
+button#logout-button {
+    margin-top: 3px;
 }
 
 button#home-button {
@@ -27,8 +31,12 @@ button#home-button {
 }
 
 #profile-button {
-    right: 15%;
+    margin-top: 0px;
+    right: 12.5%;
+    background: none;
+    height: 50%;
 }
+
 
 button#logout-button {
     right: 3.5%;

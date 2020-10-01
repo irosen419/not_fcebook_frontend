@@ -19,15 +19,15 @@ class PostContent extends React.Component {
             <>
                 <div className="post-header">
                     <a href={`http://localhost:3001/profile/${this.props.post.user_id}`} >
-                    {this.props.post.post_user_url === "" ? 
-                        <img id="post" alt="Alt" src="../blank-profile-pic.png" /> :
-                        <img id="post" alt="" src={`http://localhost:3000${this.props.post.post_user_url}`} />
+                        {this.props.post.post_user_url === "" ?
+                            <img id="post" alt="Alt" src={require("../Components/blank-profile-pic.png")} /> :
+                            <img id="post" alt="" src={`http://localhost:3000${this.props.post.post_user_url}`} />
                         }
                         <h3 onClick={this.clickHandler}>
-                                {this.props.post.user_name}
+                            {this.props.post.user_name}
                         </h3>
                     </a>
-                        at {this.props.post.time}
+                    {this.props.post.time}
                 </div>
                 <div className="post-content">
                     {!this.props.clicked ?

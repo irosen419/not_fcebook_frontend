@@ -9,7 +9,8 @@ export default class Post extends React.Component {
     state = {
         post: this.props.post,
         likes: this.props.post.post_likes ? this.props.post.post_likes : [],
-        clicked: false
+        clicked: false,
+        editor: false
     }
 
     postAddLike = (newLikeObj) => {
@@ -64,12 +65,36 @@ export default class Post extends React.Component {
         }))
     }
 
+    showEditButtons = () => {
+        return (
+            <div className="buttons post-buttons">
+                <span onClick={this.toggleEditor}>x</span>
+                <button className="post-edit edit" onClick={this.edit} >Edit</button>
+                <button className="post-delete delete" onClick={() => this.props.deletePost(this.state.post)} >Delete</button>
+            </div>
+        )
+    }
 
+    showEditMenu = () => {
+        return (this.state.editor ?
+            this.showEditButtons() :
+            <img className="menu" alt="Alt" src={require("../Components/menu-icon.png")} onClick={this.toggleEditor} />)
+    }
+
+    decideEditMenu = () => {
+        return this.state.post.user_id === this.props.user.id ? this.showEditMenu() : null
+    }
+
+    toggleEditor = () => {
+        this.setState((previousState) => ({ editor: !previousState.editor }))
+    }
 
     render() {
-        // console.log("Looking for deletePost: ", this.props)
         return (
             <div className="post">
+                <div className="right extra">
+                    {this.decideEditMenu()}
+                </div>
                 <PostContent
                     post={this.props.post}
                     clicked={this.state.clicked}
@@ -85,12 +110,6 @@ export default class Post extends React.Component {
                         postAddLike={this.postAddLike}
                         postRemoveLike={this.postRemoveLike}
                     />
-                    {this.state.post.user_id === this.props.user.id ?
-                        <div >
-                            <button onClick={this.edit} >Edit</button>
-                            <button onClick={() => this.props.deletePost(this.state.post)} >Delete</button>
-                        </div>
-                        : null}
                 </div>
                 <CommentContainer
                     user={this.props.user}

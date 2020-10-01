@@ -3,3 +3,24 @@
     overflow-y: hidden;
     overflow: scroll;
 }
+
+#home .post {
+    max-width: 40vw;
+    height: fit-content;
+    margin: auto;
+    margin-top: 2%
+}
+
+#home #post-form{
+    position: relative;
+    
+    height: 10%;
+    width: 39vw;
+    margin: auto;
+    margin-top: 3.5vh;
+    padding: 5%;
+    
+    border-radius: 10px;
+    
+    box-shadow: .5px 1px 3px grey;
+}    

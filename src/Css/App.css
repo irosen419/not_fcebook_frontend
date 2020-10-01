@@ -4,6 +4,19 @@
   
   position: relative;
 }
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
+img {
+  border-radius: 50%;
+}
+
 /* 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
