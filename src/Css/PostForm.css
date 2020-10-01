@@ -46,3 +46,7 @@
     font-size: large;
 }
 
+.preview {
+    max-height: 40px;
+    width: auto;
+}

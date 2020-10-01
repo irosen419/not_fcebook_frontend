@@ -9,6 +9,10 @@ export default function PostForm(props) {
         props.submitHandler()
     }
 
+    const renderPreview = () => {
+        return props.preview.map(photo => <img key={""} className="preview" alt="" src={photo} /> )
+    }
+
     return (
         <form id="post-form" onSubmit={submit}>
             <div id="inner-form">
@@ -19,8 +23,12 @@ export default function PostForm(props) {
                     value={props.content}
                     onChange={props.changeHandler}
                 />
+                <div id="preview-div">
+                    {props.preview.length > 0 ? renderPreview() : null}
+                </div>
                 <input 
                     type="file"
+                    multiple
                     name="post_photo" 
                     accept="image/*" 
                     onChange={props.pictureHandler}
