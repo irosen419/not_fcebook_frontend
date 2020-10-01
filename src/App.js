@@ -13,8 +13,7 @@ class App extends React.Component {
   state = {
     user: "",
     signup: false,
-    followingArray: [],
-    currentUserPosts: [],
+
     content: "",
     editContent: "",
     editPostObj: null,
@@ -168,78 +167,78 @@ class App extends React.Component {
       })
     //Returns the current user with no followers or followings associations
   }
+//FOR EDIT//
+  // submitHandler = () => {
+  //   console.log("submitting")
+  //   if (this.state.editPostObj) {
+  //     // -- EDIT POST FETCH -- //
+  //     const newPost = {
+  //       content: this.state.editContent,
+  //       user_id: this.state.user.id
+  //     }
+  //     const configObj = {
+  //       method: 'PATCH',
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem("token")}`,
+  //         'Content-Type': 'application/json',
+  //         'Accepts': 'application/json'
+  //       },
+  //       body: JSON.stringify({ post: newPost })
+  //     }
+  //     fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
+  //       .then(resp => resp.json())
+  //       .then(updatedPost => {
+  //         if (window.location.pathname.split('/')[1] === 'home') {
+  //           console.log("edited from home")
+  //           let newArray = this.state.currentUserPosts
+  //           let foundPost = newArray.find(post => post.id === updatedPost.post.id)
+  //           newArray[newArray.indexOf(foundPost)] = updatedPost.post
+  //           this.setState(() => ({ currentUserPosts: newArray }))
+  //         } else {
+  //           this.setState(() => ({
+  //             updatedPost: updatedPost,
+  //             editContent: "",
+  //             editPostObj: ""
+  //           }), this.setState(() => ({ updatedPost: "" })))
+  //         }
+  //       })
 
-  submitHandler = () => {
-    console.log("submitting")
-    if (this.state.editPostObj) {
-      // -- EDIT POST FETCH -- //
-      const newPost = {
-        content: this.state.editContent,
-        user_id: this.state.user.id
-      }
-      const configObj = {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem("token")}`,
-          'Content-Type': 'application/json',
-          'Accepts': 'application/json'
-        },
-        body: JSON.stringify({ post: newPost })
-      }
-      fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
-        .then(resp => resp.json())
-        .then(updatedPost => {
-          if (window.location.pathname.split('/')[1] === 'home') {
-            console.log("edited from home")
-            let newArray = this.state.currentUserPosts
-            let foundPost = newArray.find(post => post.id === updatedPost.post.id)
-            newArray[newArray.indexOf(foundPost)] = updatedPost.post
-            this.setState(() => ({ currentUserPosts: newArray }))
-          } else {
-            this.setState(() => ({
-              updatedPost: updatedPost,
-              editContent: "",
-              editPostObj: ""
-            }), this.setState(() => ({ updatedPost: "" })))
-          }
-        })
+  //   } else {
+  //     // -- NEW POST FETCH -- //
 
-    } else {
-      // -- NEW POST FETCH -- //
-
-      let profileUserId
-      if (window.location.pathname.split('/')[1] === 'home') {
-        profileUserId = this.state.user.id
-      } else {
-        profileUserId = parseInt(window.location.pathname.split('/')[2])
-      }
-      console.log('inside new post fetch, profileUserId: ', profileUserId)
-      const newPost = {
-        content: this.state.content,
-        user_id: this.state.user.id,
-        profile_user_id: profileUserId
-      }
-      console.log('new post', newPost)
-      const configObj = {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem("token")}`,
-          'Content-Type': 'application/json',
-          'Accepts': 'application/json'
-        },
-        body: JSON.stringify({ post: newPost })
-      }
-      fetch(`http://localhost:3000/api/v1/posts/`, configObj)
-        .then(resp => resp.json())
-        .then(postObj => {
-          this.setState(() => ({
-            currentUserPosts: [...this.state.currentUserPosts, postObj.post],
-            newPost: postObj,
-            content: ""
-          }))
-        })
-    }
-  }
+  //     let profileUserId
+  //     if (window.location.pathname.split('/')[1] === 'home') {
+  //       profileUserId = this.state.user.id
+  //     } else {
+  //       profileUserId = parseInt(window.location.pathname.split('/')[2])
+  //     }
+  //     console.log('inside new post fetch, profileUserId: ', profileUserId)
+  //     const newPost = {
+  //       content: this.state.content,
+  //       user_id: this.state.user.id,
+  //       profile_user_id: profileUserId
+  //     }
+  //     console.log('new post', newPost)
+  //     const configObj = {
+  //       method: 'POST',
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem("token")}`,
+  //         'Content-Type': 'application/json',
+  //         'Accepts': 'application/json'
+  //       },
+  //       body: JSON.stringify({ post: newPost })
+  //     }
+  //     fetch(`http://localhost:3000/api/v1/posts/`, configObj)
+  //       .then(resp => resp.json())
+  //       .then(postObj => {
+  //         this.setState(() => ({
+  //           currentUserPosts: [...this.state.currentUserPosts, postObj.post],
+  //           newPost: postObj,
+  //           content: ""
+  //         }))
+  //       })
+  //   }
+  // }
 
   changeHandler = (e) => {
     e.persist()
@@ -301,16 +300,6 @@ class App extends React.Component {
                 <Profile
                   user={this.state.user}
                   appLogout={this.appLogout}
-                  currentUserFollowing={this.state.followingArray}
-                  followOrUnfollow={this.followOrUnfollow}
-                  edit={this.edit}
-                  changeHandler={this.changeHandler}
-                  submitHandler={this.submitHandler}
-                  content={this.state.content}
-                  editContent={this.state.editContent}
-                  appDeletePost={this.appDeletePost}
-                  newPost={this.state.newPost}
-                  updatedPost={this.state.updatedPost}
                 />
                 : null
             }}
@@ -321,8 +310,6 @@ class App extends React.Component {
               return this.state.user ?
                 <Home
                   user={this.state.user}
-                  followingArray={this.state.followingArray}
-                  currentUserPosts={this.state.currentUserPosts}
                   appLogout={this.appLogout}
                   changeHandler={this.changeHandler}
                   submitHandler={this.submitHandler}

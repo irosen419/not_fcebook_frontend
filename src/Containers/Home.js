@@ -7,6 +7,36 @@ import '../Css/Post.css'
 
 class Home extends React.Component {
 
+    state = {
+        currentUser: this.props.user,
+        homePosts: [],
+        content: "",
+        editContent: "",
+        editPostObj: null,
+    }
+
+    componentDidMount() {
+        this.getHomePosts()
+    }
+
+    getHomePosts = () => {
+        const configObj = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
+            }
+        }
+        fetch(`http://localhost:3000/api/v1/users/${this.props.user.id}/home`, configObj)
+        .then(resp=>resp.json())
+        .then(posts => {
+            this.setState(()=>({
+                homePosts: posts.posts
+            }))
+        })
+    }
+
     sortByDate = (array) => {
         return array.sort((a, b) => {
             if (a.created_at > b.created_at) return -1;
@@ -15,26 +45,113 @@ class Home extends React.Component {
         });
 
     }
-    postEditor = () => {
-        this.props.submitHandler()
-        this.setState((previousState) => ({ postEditor: !previousState.postEditor }))
+    
+    submitHandler = () => {
+        if (this.state.editPostObj) {
+        // -- EDIT POST FETCH -- //
+        const newPost = {
+            content: this.state.editContent,
+            user_id: this.state.currentUser.id,
+            profile_user_id: this.state.currentUser.id
+        }
+        const configObj = {
+            method: 'PATCH',
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ post: newPost })
+        }
+        fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
+            .then(resp => resp.json())
+            .then(updatedPost => {
+                let newArray = this.state.homePosts
+                let foundPost = newArray.find(post => post.id === updatedPost.post.id)
+                newArray[newArray.indexOf(foundPost)] = updatedPost.post
+                this.setState(() => ({ 
+                    homePosts: newArray,
+                    editContent: "",
+                    editPostObj: ""
+                }))
+            })
+        } else {
+        // -- NEW POST FETCH -- //
+        const newPost = {
+            content: this.state.content,
+            user_id: this.state.currentUser.id,
+            profile_user_id: this.state.currentUser.id
+        }
+        const configObj = {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ post: newPost })
+        }
+        fetch(`http://localhost:3000/api/v1/posts/`, configObj)
+            .then(resp => resp.json())
+            .then(postObj => {
+            this.setState(() => ({
+                homePosts: [postObj.post, ...this.state.homePosts],
+                content: ""
+            }))
+            })
+        }
     }
 
-    renderFollowingsPosts = () => {
-        let arrayOfPosts = this.props.followingArray.map(user => user.posts).flat()
-        arrayOfPosts = arrayOfPosts.concat(this.props.currentUserPosts)
-        console.log(arrayOfPosts)
-        arrayOfPosts = this.sortByDate(arrayOfPosts)
+    edit = (postObj) => {
+        this.setState(() => ({
+            editContent: postObj.content,
+            editPostObj: postObj
+        }))
+    }
+
+    changeHandler = (e) => {
+        e.persist()
+        this.setState(() => ({
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    deletePost = (postObj) => {
+        const configObj = {
+            method: 'DELETE',
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ id: postObj.id, post: postObj })
+        }
+        fetch(`http://localhost:3000/api/v1/posts/${postObj.id}`, configObj)
+        .then(resp => resp.json())
+        .then(message => {
+            if (message.success) {
+                const newArray = this.state.homePosts.filter(post => post.id !== postObj.id)
+                this.setState(() => ({
+                    homePosts: newArray
+                }))
+            }
+        })
+    }
+
+
+
+    renderPosts = () => {
+        const arrayOfPosts = this.sortByDate(this.state.homePosts)
         return arrayOfPosts.map(post =>
             <Post
                 post={post}
                 key={post.id}
-                changeHandler={this.props.changeHandler}
-                submitHandler={this.props.submitHandler}
-                editContent={this.props.editContent}
-                edit={this.props.edit}
+                changeHandler={this.changeHandler}
+                submitHandler={this.submitHandler}
+                editContent={this.state.editContent}
+                edit={this.edit}
                 user={this.props.user}
-                deletePost={this.props.appDeletePost}
+                deletePost={this.deletePost}
             />
         )
     }
@@ -43,11 +160,11 @@ class Home extends React.Component {
         return (
             <div id="home" >
                 <PostForm
-                    content={this.props.content}
-                    changeHandler={this.props.changeHandler}
-                    submitHandler={this.props.submitHandler}
+                    content={this.state.content}
+                    changeHandler={this.changeHandler}
+                    submitHandler={this.submitHandler}
                 />
-                {this.props.currentUserPosts.length > 0 ? this.renderFollowingsPosts() : <h4>You need to create some posts or follow some users before you can see anything here...</h4>}
+                {this.state.homePosts.length > 0 ? this.renderPosts() : <h4>Loading...</h4>}
             </div>
         )
     }
