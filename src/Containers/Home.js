@@ -13,10 +13,12 @@ class Home extends React.Component {
         content: "",
         editContent: "",
         editPostObj: null,
+        mounted: false
     }
 
     componentDidMount() {
         this.getHomePosts()
+        this.setState(() => ({ mounted: true }))
     }
 
     getHomePosts = () => {
@@ -29,12 +31,12 @@ class Home extends React.Component {
             }
         }
         fetch(`http://localhost:3000/api/v1/users/${this.props.user.id}/home`, configObj)
-        .then(resp=>resp.json())
-        .then(posts => {
-            this.setState(()=>({
-                homePosts: posts.posts
-            }))
-        })
+            .then(resp => resp.json())
+            .then(posts => {
+                this.setState(() => ({
+                    homePosts: posts.posts
+                }))
+            })
     }
 
     sortByDate = (array) => {
@@ -46,60 +48,60 @@ class Home extends React.Component {
         });
 
     }
-    
+
     submitHandler = () => {
         if (this.state.editPostObj) {
-        // -- EDIT POST FETCH -- //
-        const newPost = {
-            content: this.state.editContent,
-            user_id: this.state.currentUser.id,
-            profile_user_id: this.state.currentUser.id
-        }
-        const configObj = {
-            method: 'PATCH',
-            headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'Accepts': 'application/json'
-            },
-            body: JSON.stringify({ post: newPost })
-        }
-        fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
-            .then(resp => resp.json())
-            .then(updatedPost => {
-                let newArray = this.state.homePosts
-                let foundPost = newArray.find(post => post.id === updatedPost.post.id)
-                newArray[newArray.indexOf(foundPost)] = updatedPost.post
-                this.setState(() => ({ 
-                    homePosts: newArray,
-                    editContent: "",
-                    editPostObj: ""
-                }))
-            })
+            // -- EDIT POST FETCH -- //
+            const newPost = {
+                content: this.state.editContent,
+                user_id: this.state.currentUser.id,
+                profile_user_id: this.state.currentUser.id
+            }
+            const configObj = {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                body: JSON.stringify({ post: newPost })
+            }
+            fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
+                .then(resp => resp.json())
+                .then(updatedPost => {
+                    let newArray = this.state.homePosts
+                    let foundPost = newArray.find(post => post.id === updatedPost.post.id)
+                    newArray[newArray.indexOf(foundPost)] = updatedPost.post
+                    this.setState(() => ({
+                        homePosts: newArray,
+                        editContent: "",
+                        editPostObj: ""
+                    }))
+                })
         } else {
-        // -- NEW POST FETCH -- //
-        const newPost = {
-            content: this.state.content,
-            user_id: this.state.currentUser.id,
-            profile_user_id: this.state.currentUser.id
-        }
-        const configObj = {
-            method: 'POST',
-            headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'Accepts': 'application/json'
-            },
-            body: JSON.stringify({ post: newPost })
-        }
-        fetch(`http://localhost:3000/api/v1/posts/`, configObj)
-            .then(resp => resp.json())
-            .then(postObj => {
-            this.setState(() => ({
-                homePosts: [postObj.post, ...this.state.homePosts],
-                content: ""
-            }))
-            })
+            // -- NEW POST FETCH -- //
+            const newPost = {
+                content: this.state.content,
+                user_id: this.state.currentUser.id,
+                profile_user_id: this.state.currentUser.id
+            }
+            const configObj = {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                body: JSON.stringify({ post: newPost })
+            }
+            fetch(`http://localhost:3000/api/v1/posts/`, configObj)
+                .then(resp => resp.json())
+                .then(postObj => {
+                    this.setState(() => ({
+                        homePosts: [postObj.post, ...this.state.homePosts],
+                        content: ""
+                    }))
+                })
         }
     }
 
@@ -121,22 +123,22 @@ class Home extends React.Component {
         const configObj = {
             method: 'DELETE',
             headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'Accepts': 'application/json'
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
             },
             body: JSON.stringify({ id: postObj.id, post: postObj })
         }
         fetch(`http://localhost:3000/api/v1/posts/${postObj.id}`, configObj)
-        .then(resp => resp.json())
-        .then(message => {
-            if (message.success) {
-                const newArray = this.state.homePosts.filter(post => post.id !== postObj.id)
-                this.setState(() => ({
-                    homePosts: newArray
-                }))
-            }
-        })
+            .then(resp => resp.json())
+            .then(message => {
+                if (message.success) {
+                    const newArray = this.state.homePosts.filter(post => post.id !== postObj.id)
+                    this.setState(() => ({
+                        homePosts: newArray
+                    }))
+                }
+            })
     }
 
 
@@ -157,6 +159,10 @@ class Home extends React.Component {
         )
     }
 
+    mounted = () => {
+        return this.state.mounted ? <h4>You need to create some posts or follow some users before you can see anything here...</h4> : <h4>Loading...</h4>
+    }
+
     render() {
         return (
             <div id="home" >
@@ -165,8 +171,7 @@ class Home extends React.Component {
                     changeHandler={this.changeHandler}
                     submitHandler={this.submitHandler}
                 />
-                {this.state.homePosts.length > 0 ? this.renderPosts() : <h4>Loading...</h4>}
-                //<h4>You need to create some posts or follow some users before you can see anything here...</h4>
+                {this.state.homePosts.length > 0 ? this.renderPosts() : this.mounted()}
             </div>
         )
     }
