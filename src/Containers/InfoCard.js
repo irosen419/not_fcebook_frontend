@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import img from './blank-profile-pic.png'
+import img from "../Components/blank-profile-pic.png"
 
 function InfoCard(props) {
     const following = () => {
@@ -8,11 +8,12 @@ function InfoCard(props) {
     }
     const friends = () => {
         return props.profileFriends.map(user => {
+            console.log("Friend ", user)
             return <a href={`http://localhost:3001/profile/${user.id}`} >
                 <li>
-                    {user.pic_url === "" ?
-                        <img id="friend-list-img" alt="" src={require("../Components/blank-profile-pic.png")} /> :
-                        <img id="friend-list-img" alt="" src={user.img_url} />
+                    {user.img_url ?
+                        <img id="friend-list-img" alt="" src={user.img_url} /> :
+                        <img id="friend-list-img" alt="" src={img} />
                     }
                     {user.user_name}
                 </li>
@@ -20,18 +21,20 @@ function InfoCard(props) {
         })
     }
 
+
+    console.log(props)
     return (
         <div id="info-card">
             <div id="about-and-follow">
-                {!props.profileUser.img_url ? 
-                <img id="profile" alt="" src={img} /> :
-                <img id="profile" alt="" src={props.profileUser.img_url} />
+                {!props.profileUser.img_url ?
+                    <img id="profile" alt="" src={img} /> :
+                    <img id="profile" alt="" src={props.profileUser.img_url} />
                 }
                 <h2>About {props.profileUser.first_name}</h2>
-                {props.profileUser.id !== props.currentUser.id ? 
+                {props.profileUser.id !== props.currentUser.id ?
                     <button id="follow-button" onClick={props.followOrUnfollow}>
                         {following().includes(props.currentUser.id) ? 'Unfollow' : 'Follow'}
-                    </button > 
+                    </button >
                     : null
                 }
             </div>

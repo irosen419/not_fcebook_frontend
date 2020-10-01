@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     padding-left: 20px;
-    font-size: .9375rem;
+    font-size: .8725rem;
     height: fit-content;
     min-height: 45px;
     margin: 0px 5px 20px 5px;
@@ -17,6 +17,8 @@
 
 .comment-words {
     display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .right {

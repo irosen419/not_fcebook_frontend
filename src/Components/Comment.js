@@ -1,6 +1,7 @@
 import React from 'react'
 import '../Css/Comment.css'
 import Like from './Like'
+import img from "../Components/blank-profile-pic.png"
 
 export default class Comment extends React.Component {
 
@@ -51,11 +52,14 @@ export default class Comment extends React.Component {
     }
 
     render() {
-        console.log(this.props.user)
-        console.log(this.props.comment)
+        console.log("Comment props: ", this.props)
         return (
             <div className="comment" >
                 <div className="comment-words">
+                    {this.props.user.img_url ?
+                        <img id="post" alt="" src={this.props.user.img_url} /> :
+                        <img id="post" alt="Alt" src={img} />
+                    }
                     <strong><p className="comment-username">{this.props.comment.user_name}:</p></strong>
                     <p className="comment-content">{this.props.comment.content}</p>
                 </div>

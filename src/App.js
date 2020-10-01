@@ -104,50 +104,50 @@ class App extends React.Component {
   }
 
 
-  followOrUnfollow = (e) => {
-    if (e.target.innerText === 'Follow') {
-      this.follow()
-    } else if (e.target.innerText === 'Unfollow') {
-      this.unfollow()
-    }
-  }
+  // followOrUnfollow = (e) => {
+  //   if (e.target.innerText === 'Follow') {
+  //     this.follow()
+  //   } else if (e.target.innerText === 'Unfollow') {
+  //     this.unfollow()
+  //   }
+  // }
 
-  follow = () => {
-    const configObj = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'Content-Type': 'application/json',
-        'Accepts': 'application/json'
-      },
-      body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
-    }
-    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/follow`, configObj)
-      .then(resp => resp.json())
-      .then(user => this.setState((previousState) => ({ followingArray: [...previousState.followingArray, user.user] })))
-    //Returns the current user with no followers or followings associations
-  }
+  // follow = () => {
+  //   const configObj = {
+  //     method: 'POST',
+  //     headers: {
+  //       'Authorization': `Bearer ${localStorage.getItem("token")}`,
+  //       'Content-Type': 'application/json',
+  //       'Accepts': 'application/json'
+  //     },
+  //     body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
+  //   }
+  //   fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/follow`, configObj)
+  //     .then(resp => resp.json())
+  //     .then(user => this.setState((previousState) => ({ followingArray: [...previousState.followingArray, user.user] })))
+  //   //Returns the current user with no followers or followings associations
+  // }
 
-  unfollow = () => {
-    const configObj = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'Content-Type': 'application/json',
-        'Accepts': 'application/json'
-      },
-      body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
-    }
-    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/unfollow`, configObj)
-      .then(resp => resp.json())
-      .then(user => {
-        let newArray = this.state.followingArray
-        let foundUser = newArray.find(userObj => userObj.id === user.user.id)
-        newArray.splice(newArray.indexOf(foundUser), 1)
-        this.setState(() => ({ followingArray: newArray }))
-      })
-    //Returns the current user with no followers or followings associations
-  }
+  // unfollow = () => {
+  //   const configObj = {
+  //     method: 'POST',
+  //     headers: {
+  //       'Authorization': `Bearer ${localStorage.getItem("token")}`,
+  //       'Content-Type': 'application/json',
+  //       'Accepts': 'application/json'
+  //     },
+  //     body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
+  //   }
+  //   fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/unfollow`, configObj)
+  //     .then(resp => resp.json())
+  //     .then(user => {
+  //       let newArray = this.state.followingArray
+  //       let foundUser = newArray.find(userObj => userObj.id === user.user.id)
+  //       newArray.splice(newArray.indexOf(foundUser), 1)
+  //       this.setState(() => ({ followingArray: newArray }))
+  //     })
+  //   //Returns the current user with no followers or followings associations
+  // }
 
 
 

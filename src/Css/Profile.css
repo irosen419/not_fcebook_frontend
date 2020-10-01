@@ -16,6 +16,7 @@
 #profile #info-card {
     height: fit-content;
     width: 25%;
+    padding: 10px;
     margin-top: 3.5vh;
     border-style: none;
 
@@ -29,8 +30,7 @@
 #about-and-follow {
     display: flex;
     align-items: center;
-    margin-top: 10%;
-    margin-left: 10%;
+    
 }
 
 #about-and-follow h2 {

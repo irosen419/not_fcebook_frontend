@@ -2,7 +2,7 @@ import React from 'react'
 import '../Css/Header.css'
 import { Link, withRouter } from 'react-router-dom'
 import SearchForm from '../Components/SearchForm'
-
+import img from "../Components/blank-profile-pic.png"
 
 
 function Header(props) {
@@ -10,17 +10,22 @@ function Header(props) {
     const clickHandler = () => {
         localStorage.setItem("userId", props.user.id)
     }
+
+    const chooseImage = () => {
+        return props.user.img_url ?
+            <img id="profile-button" alt="Alt" src={props.user.img_url} onClick={clickHandler} /> :
+            <img id="profile-button" alt="Default Img" src={img} onClick={clickHandler} />
+    }
+    console.log(props)
     return (
         <div id="header">
             <Link to={'/home'}><button id="home-button">! facebook</button></Link>
             <SearchForm formClickHandler={props.formClickHandler} />
-            <a href={`/profile/${props.user.id}`}>
-                <img id="profile-button" onClick={clickHandler} alt="Alt" src={require("../Components/blank-profile-pic.png")} />
-            </a>
+            <a href={`/profile/${props.user.id}`}>{chooseImage()}</a>
             <button id="logout-button" onClick={props.appLogout}>Log Out</button>
         </div>
     )
-
+    //<img id="profile-button" onClick={clickHandler} alt="Alt" src={require("../Components/blank-profile-pic.png")} />
 }
 
 export default withRouter(Header)
