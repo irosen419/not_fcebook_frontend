@@ -10,22 +10,16 @@ class Profile extends React.Component {
     state = {
         posts: [],
         profileUser: "",
-        followingArray: [],
+        profileFriends: [],
+        content: "",
+        editContent: "",
+        editPostObj: null, 
     }
 
     componentDidMount() {
         this.profileUserFetch()
-        this.getUsersFollowings()
     }
 
-    componentDidUpdate(pP) {
-        if (pP.newPost !== this.props.newPost) {
-            this.setState((pS) => ({ posts: [this.props.newPost.post, ...pS.posts] }))
-        } else if (pP.updatedPost !== this.props.updatedPost) {
-            const newArray = this.state.posts.filter(post => post.id !== this.props.updatedPost.post.id)
-            this.setState(() => ({ posts: [this.props.updatedPost.post, ...newArray] }))
-        }
-    }
 
     profileUserFetch = () => {
         const profileId = window.location.pathname.split('/')[2]
@@ -37,39 +31,167 @@ class Profile extends React.Component {
                 'Accepts': 'application/json'
             }
         }
-        fetch(`http://localhost:3000/api/v1/users/${profileId}`, configObj)
+        fetch(`http://localhost:3000/api/v1/users/${profileId}/profile`, configObj)
             .then(resp => resp.json())
-            .then(user => {
-                console.log(user)
+            .then(profile => {
+                console.log(profile)
                 this.setState(() => ({
-                    posts: user.user.posts,
-                    profileUser: user.user
+                    posts: profile.posts,
+                    profileUser: profile.user, 
+                    profileFriends: profile.user.profile_friends
                 }))
             })
-        // Returns all posts for the user who's ID is passed in with associated likes, comments.
     }
 
-    optimisticDelete = (postObj) => {
-        const newArray = this.state.posts.filter(post => post.id !== postObj.id)
-        this.setState(() => ({
-            posts: newArray
-        }))
-        this.props.appDeletePost(postObj)
-    }
 
-    getUsersFollowings = () => {
-        const configObj = {
-            method: 'GET',
+    submitHandler = () => {
+        if (this.state.editPostObj) {
+            // -- EDIT POST FETCH -- //
+            const newPost = {
+            content: this.state.editContent,
+            user_id: this.props.user.id
+            }
+            const configObj = {
+            method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                'Content-type': 'application/json',
+                'Content-Type': 'application/json',
                 'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ post: newPost })
             }
-            // body: {NO BODY}
-        }
-        fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem("userId")}/followings`, configObj)
+            fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
             .then(resp => resp.json())
-            .then(usersArray => this.setState(() => ({ followingArray: usersArray.followers })))
+            .then(updatedPost => {
+                let newArray = this.state.posts
+                let foundPost = newArray.find(post => post.id === updatedPost.post.id)
+                newArray[newArray.indexOf(foundPost)] = updatedPost.post
+                this.setState(() => ({
+                    posts: newArray,
+                    editContent: "",
+                    editPostObj: ""
+                }))
+            })
+        } else {
+            // -- NEW POST FETCH -- //
+            const newPost = {
+            content: this.state.content,
+            user_id: this.props.user.id,
+            profile_user_id: this.state.profileUser.id
+            }
+            const configObj = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ post: newPost })
+            }
+            fetch(`http://localhost:3000/api/v1/posts/`, configObj)
+            .then(resp => resp.json())
+            .then(postObj => {
+                console.log(postObj)
+                this.setState(() => ({
+                    posts: [postObj.post, ...this.state.posts],
+                    content: ""
+                }))
+            })
+        }
+        }
+    changeHandler = (e) => {
+        e.persist()
+        this.setState(() => ({
+            [e.target.name]: e.target.value
+        }))
+    }    
+
+    edit = (postObj) => {
+        console.log("edit obj: ", postObj)
+        this.setState(() => ({
+            editContent: postObj.content,
+            editPostObj: postObj
+        }))
+    }
+
+    follow = () => {
+        console.log('current user', this.props.user)
+        const configObj = {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ follow: { follower_id: this.props.user.id, followed_user_id: this.state.profileUser.id } })
+        }
+        fetch(`http://localhost:3000/api/v1/users/${this.props.user.id}/follow`, configObj)
+            .then(resp => resp.json())
+            .then(message => {
+                console.log(message)
+                if (message.success){
+                    const u = {
+                        id: this.props.user.id,
+                        user_name: this.props.user.user_name,
+                        img_url: this.props.user.img_url
+                    }
+                    this.setState(()=>({
+                        profileFriends: [u, ...this.state.profileFriends]
+                    }))
+                }
+            })
+    }
+
+    unfollow = () => {
+        const configObj = {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ follow: { follower_id: this.props.user.id, followed_user_id: this.state.profileUser.id } })
+        }
+        fetch(`http://localhost:3000/api/v1/users/${this.props.user.id}/unfollow`, configObj)
+        .then(resp => resp.json())
+        .then(message => {
+            if (message.success){
+                const newArray = this.state.profileFriends.filter(friend => friend.id !== this.props.user.id)
+                this.setState(() => ({ 
+                    profileFriends: newArray
+                }))
+            }
+        })
+    }
+
+    followOrUnfollow = (e) => {
+        if (e.target.innerText === 'Follow') {
+            this.follow()
+        } else if (e.target.innerText === 'Unfollow') {
+            this.unfollow()
+        }
+    }
+
+    deletePost = (postObj) => {
+        const configObj = {
+            method: 'DELETE',
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'Accepts': 'application/json'
+            },
+            body: JSON.stringify({ id: postObj.id, post: postObj })
+        }
+        fetch(`http://localhost:3000/api/v1/posts/${postObj.id}`, configObj)
+        .then(resp => resp.json())
+        .then(message => {
+            if (message.success) {
+                const newArray = this.state.posts.filter(post => post.id !== postObj.id)
+                this.setState(() => ({
+                    posts: newArray
+                }))
+            }
+        })
     }
 
 
@@ -78,27 +200,26 @@ class Profile extends React.Component {
         return (
             <div id="profile">
                 <InfoCard
+                    profileUser={this.state.profileUser}
                     currentUser={this.props.user}
-                    user={this.state.profileUser}
-                    followOrUnfollow={this.props.followOrUnfollow}
-                    followingArray={this.state.followingArray}
-                    currentUserFollowing={this.props.currentUserFollowing}
+                    followOrUnfollow={this.followOrUnfollow}
+                    profileFriends={this.state.profileFriends}
                 />
                 <div id="posts">
                     <PostForm
-                        content={this.props.content}
-                        changeHandler={this.props.changeHandler}
-                        submitHandler={this.props.submitHandler}
+                        content={this.state.content}
+                        changeHandler={this.changeHandler}
+                        submitHandler={this.submitHandler}
                     />
                     {this.state.posts ?
                         <PostContainer
                             user={this.props.user}
                             posts={this.state.posts}
-                            edit={this.props.edit}
-                            changeHandler={this.props.changeHandler}
-                            submitHandler={this.props.submitHandler}
-                            editContent={this.props.editContent}
-                            deletePost={this.optimisticDelete}
+                            edit={this.edit}
+                            changeHandler={this.changeHandler}
+                            submitHandler={this.submitHandler}
+                            editContent={this.state.editContent}
+                            deletePost={this.deletePost}
                         />
                         : null}
                 </div>

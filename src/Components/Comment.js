@@ -51,6 +51,8 @@ export default class Comment extends React.Component {
     }
 
     render() {
+        console.log(this.props.user)
+        console.log(this.props.comment)
         return (
             <div className="comment" >
                 <div className="comment-words">
