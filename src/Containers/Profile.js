@@ -12,6 +12,7 @@ class Profile extends React.Component {
         profileUser: "",
         profileFriends: [],
         content: "",
+        post_photo: null,
         editContent: "",
         editPostObj: null, 
     }
@@ -74,36 +75,59 @@ class Profile extends React.Component {
             })
         } else {
             // -- NEW POST FETCH -- //
-            const newPost = {
-            content: this.state.content,
-            user_id: this.props.user.id,
-            profile_user_id: this.state.profileUser.id
-            }
+            let formData = new FormData()
+            formData.append('post[content]', this.state.content)
+            formData.append('post[user_id]', this.props.user.id)
+            formData.append('post[profile_user_id]', this.state.profileUser.id)
+            formData.append('post_photo', this.state.post_photo)
             const configObj = {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                'Content-Type': 'application/json',
-                'Accepts': 'application/json'
-            },
-            body: JSON.stringify({ post: newPost })
+            headers: {'Authorization': `Bearer ${localStorage.getItem("token")}`}, 
+            body: formData
             }
+            console.log(configObj)
             fetch(`http://localhost:3000/api/v1/posts/`, configObj)
             .then(resp => resp.json())
             .then(postObj => {
                 console.log(postObj)
                 this.setState(() => ({
                     posts: [postObj.post, ...this.state.posts],
-                    content: ""
+                    content: "",
+                    post_photo: null
                 }))
             })
+            
+            
+            
+            // const newPost = {
+            // content: this.state.content,
+            // user_id: this.props.user.id,
+            // profile_user_id: this.state.profileUser.id
+            // }
+            // const configObj = {
+            // method: 'POST',
+            // headers: {
+            //     'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            //     'Content-Type': 'application/json',
+            //     'Accepts': 'application/json'
+            // },
+            // body: JSON.stringify({ post: newPost })
+            // }
+
         }
-        }
+
+    }
     changeHandler = (e) => {
         e.persist()
         this.setState(() => ({
             [e.target.name]: e.target.value
         }))
+    }
+    pictureHandler = (e) => {
+        e.persist()
+        if (e.target.files[0]) {
+            this.setState({ post_photo: e.target.files[0] })
+        }
     }    
 
     edit = (postObj) => {
@@ -208,6 +232,7 @@ class Profile extends React.Component {
                 <div id="posts">
                     <PostForm
                         content={this.state.content}
+                        pictureHandler={this.pictureHandler}
                         changeHandler={this.changeHandler}
                         submitHandler={this.submitHandler}
                     />

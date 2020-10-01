@@ -19,6 +19,12 @@ export default function PostForm(props) {
                     value={props.content}
                     onChange={props.changeHandler}
                 />
+                <input 
+                    type="file"
+                    name="post_photo" 
+                    accept="image/*" 
+                    onChange={props.pictureHandler}
+                />
                 <input type="submit" value="Post" />
             </div>
         </form>
