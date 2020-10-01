@@ -21,9 +21,11 @@ export default class Comment extends React.Component {
         }
         fetch(`http://localhost:3000/api/v1/posts/${this.state.comment.post_id}/comments/${this.state.comment.id}/like`, configObj)
             .then(resp => resp.json())
-            .then(comment => { this.setState(() => ({
-                comment: comment.comment,
-                likes: comment.comment.comment_likes
+            .then(comment => { 
+                console.log(comment)
+                this.setState(() => ({
+                    comment: comment.comment,
+                    likes: comment.comment.comment_likes
                 }))
         })
         // Returns the comment that was liked, with all comment_likes associated with it.
@@ -50,6 +52,8 @@ export default class Comment extends React.Component {
     }
 
     render() {
+        console.log(this.props.user)
+        console.log(this.props.comment)
         return (
             <div className="comment" >
                 <strong><p>{this.props.comment.user_name}:</p></strong>
