@@ -15,7 +15,7 @@ class Profile extends React.Component {
         post_photo: [],
         post_photoURL: [],
         editContent: "",
-        editPostObj: null, 
+        editPostObj: null,
     }
 
     componentDidMount() {
@@ -38,7 +38,7 @@ class Profile extends React.Component {
             .then(profile => {
                 this.setState(() => ({
                     posts: profile.posts,
-                    profileUser: profile.user, 
+                    profileUser: profile.user,
                     profileFriends: profile.user.profile_friends
                 }))
             })
@@ -49,30 +49,30 @@ class Profile extends React.Component {
         if (this.state.editPostObj) {
             // -- EDIT POST FETCH -- //
             const newPost = {
-            content: this.state.editContent,
-            user_id: this.props.user.id
+                content: this.state.editContent,
+                user_id: this.props.user.id
             }
             const configObj = {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                'Content-Type': 'application/json',
-                'Accepts': 'application/json'
-            },
-            body: JSON.stringify({ post: newPost })
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                body: JSON.stringify({ post: newPost })
             }
             fetch(`http://localhost:3000/api/v1/posts/${this.state.editPostObj.id}`, configObj)
-            .then(resp => resp.json())
-            .then(updatedPost => {
-                let newArray = this.state.posts
-                let foundPost = newArray.find(post => post.id === updatedPost.post.id)
-                newArray[newArray.indexOf(foundPost)] = updatedPost.post
-                this.setState(() => ({
-                    posts: newArray,
-                    editContent: "",
-                    editPostObj: ""
-                }))
-            })
+                .then(resp => resp.json())
+                .then(updatedPost => {
+                    let newArray = this.state.posts
+                    let foundPost = newArray.find(post => post.id === updatedPost.post.id)
+                    newArray[newArray.indexOf(foundPost)] = updatedPost.post
+                    this.setState(() => ({
+                        posts: newArray,
+                        editContent: "",
+                        editPostObj: ""
+                    }))
+                })
         } else {
             // -- NEW POST FETCH -- //
             let formData = new FormData()
@@ -84,9 +84,9 @@ class Profile extends React.Component {
                 formData.append(`post_photo[${i}]`, files[i])
             }
             const configObj = {
-            method: 'POST',
-            headers: {'Authorization': `Bearer ${localStorage.getItem("token")}`}, 
-            body: formData
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
+                body: formData
             }
             fetch(`http://localhost:3000/api/v1/posts/`, configObj)
             .then(resp => resp.json())
@@ -125,11 +125,13 @@ class Profile extends React.Component {
                 }))
             }
         }
+
             this.setState(()=> ({ 
                 post_photo: [fileArray, ...this.state.post_photo].flat()
             }))
         
     }    
+
 
     edit = (postObj) => {
         console.log("edit obj: ", postObj)
@@ -144,9 +146,9 @@ class Profile extends React.Component {
         const configObj = {
             method: 'POST',
             headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'Accepts': 'application/json'
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
             },
             body: JSON.stringify({ follow: { follower_id: this.props.user.id, followed_user_id: this.state.profileUser.id } })
         }
@@ -154,13 +156,13 @@ class Profile extends React.Component {
             .then(resp => resp.json())
             .then(message => {
                 console.log(message)
-                if (message.success){
+                if (message.success) {
                     const u = {
                         id: this.props.user.id,
                         user_name: this.props.user.user_name,
                         img_url: this.props.user.img_url
                     }
-                    this.setState(()=>({
+                    this.setState(() => ({
                         profileFriends: [u, ...this.state.profileFriends]
                     }))
                 }
@@ -171,22 +173,22 @@ class Profile extends React.Component {
         const configObj = {
             method: 'POST',
             headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'Accepts': 'application/json'
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
             },
             body: JSON.stringify({ follow: { follower_id: this.props.user.id, followed_user_id: this.state.profileUser.id } })
         }
         fetch(`http://localhost:3000/api/v1/users/${this.props.user.id}/unfollow`, configObj)
-        .then(resp => resp.json())
-        .then(message => {
-            if (message.success){
-                const newArray = this.state.profileFriends.filter(friend => friend.id !== this.props.user.id)
-                this.setState(() => ({ 
-                    profileFriends: newArray
-                }))
-            }
-        })
+            .then(resp => resp.json())
+            .then(message => {
+                if (message.success) {
+                    const newArray = this.state.profileFriends.filter(friend => friend.id !== this.props.user.id)
+                    this.setState(() => ({
+                        profileFriends: newArray
+                    }))
+                }
+            })
     }
 
     followOrUnfollow = (e) => {
@@ -201,25 +203,23 @@ class Profile extends React.Component {
         const configObj = {
             method: 'DELETE',
             headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'Accepts': 'application/json'
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
             },
             body: JSON.stringify({ id: postObj.id, post: postObj })
         }
         fetch(`http://localhost:3000/api/v1/posts/${postObj.id}`, configObj)
-        .then(resp => resp.json())
-        .then(message => {
-            if (message.success) {
-                const newArray = this.state.posts.filter(post => post.id !== postObj.id)
-                this.setState(() => ({
-                    posts: newArray
-                }))
-            }
-        })
+            .then(resp => resp.json())
+            .then(message => {
+                if (message.success) {
+                    const newArray = this.state.posts.filter(post => post.id !== postObj.id)
+                    this.setState(() => ({
+                        posts: newArray
+                    }))
+                }
+            })
     }
-
-
 
     render() {
         console.log(this.state.post_photoURL)
@@ -248,6 +248,7 @@ class Profile extends React.Component {
                             submitHandler={this.submitHandler}
                             editContent={this.state.editContent}
                             deletePost={this.deletePost}
+                            showOrHideModal={this.props.showOrHideModal}
                         />
                         : null}
                 </div>

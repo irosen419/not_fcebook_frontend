@@ -30,6 +30,7 @@ export default class PostContainer extends React.Component {
                 changeHandler={this.props.changeHandler}
                 submitHandler={this.props.submitHandler}
                 editContent={this.props.editContent}
+                showOrHideModal={this.props.showOrHideModal}
             />
         )
     }

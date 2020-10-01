@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CommentForm (props) {
+export default function CommentForm(props) {
 
     const submit = (e) => {
         e.preventDefault()
@@ -10,12 +10,12 @@ export default function CommentForm (props) {
     return (
         <div className="comment-form" >
             <form onSubmit={submit} >
-                <input 
-                    type="textarea" 
-                    placeholder="Add a comment..." 
-                    name="content" 
-                    value={props.content} 
-                    onChange={props.changeHandler} 
+                <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    name="content"
+                    value={props.content}
+                    onChange={props.changeHandler}
                 />
             </form>
         </div>

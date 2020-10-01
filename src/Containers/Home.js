@@ -155,6 +155,7 @@ class Home extends React.Component {
                 edit={this.edit}
                 user={this.props.user}
                 deletePost={this.deletePost}
+                showOrHideModal={this.props.showOrHideModal}
             />
         )
     }
@@ -164,6 +165,7 @@ class Home extends React.Component {
     }
 
     render() {
+        console.log(this.state.homePosts)
         return (
             <div id="home" >
                 <PostForm
