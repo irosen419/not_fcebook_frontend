@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import '../Css/PostContent.css'
 import img from "../Components/blank-profile-pic.png"
+import PhotoModal from './PhotoModal'
 
 
 class PostContent extends React.Component {
@@ -14,9 +15,12 @@ class PostContent extends React.Component {
         this.props.submitHandler()
     }
 
+    showModal = () => {
+        this.props.showOrHideModal(this.props.post.photos)
+    }
 
     render() {
-        console.log("Post Props: ", this.props.post)
+        console.log("state: ", this.state)
         return (
             <>
                 <div className="post-header">
@@ -32,9 +36,6 @@ class PostContent extends React.Component {
                     {this.props.post.time}
                 </div>
                 <div className="post-content">
-                    {this.props.post.photos.length > 0 ?
-                        <img className="post-photo" alt="" src={this.props.post.photos[0].img_url} /> 
-                        : null}
                     {!this.props.clicked ?
                         this.props.post.content :
                         <div>
@@ -47,6 +48,9 @@ class PostContent extends React.Component {
                                 />
                             </form>
                         </div>}
+                    {this.props.post.photos.length > 0 ?
+                        <img className="post-photo" alt="" src={this.props.post.photos[0].img_url} onClick={this.showModal} />
+                        : null}
                 </div>
             </>
         )

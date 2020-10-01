@@ -6,6 +6,7 @@ import SignUp from './Components/SignUp'
 import Profile from './Containers/Profile'
 import Home from './Containers/Home'
 import Header from './Containers/Header'
+import PhotoModal from './Components/PhotoModal'
 import './Css/App.css';
 
 class App extends React.Component {
@@ -13,7 +14,9 @@ class App extends React.Component {
   state = {
     user: "",
     signup: false,
-    error: false
+    error: false,
+    photoModal: false,
+    photoArray: []
   }
 
   componentDidMount() {
@@ -103,59 +106,17 @@ class App extends React.Component {
     this.setState({ user: "" })
   }
 
-
-  // followOrUnfollow = (e) => {
-  //   if (e.target.innerText === 'Follow') {
-  //     this.follow()
-  //   } else if (e.target.innerText === 'Unfollow') {
-  //     this.unfollow()
-  //   }
-  // }
-
-  // follow = () => {
-  //   const configObj = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Authorization': `Bearer ${localStorage.getItem("token")}`,
-  //       'Content-Type': 'application/json',
-  //       'Accepts': 'application/json'
-  //     },
-  //     body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
-  //   }
-  //   fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/follow`, configObj)
-  //     .then(resp => resp.json())
-  //     .then(user => this.setState((previousState) => ({ followingArray: [...previousState.followingArray, user.user] })))
-  //   //Returns the current user with no followers or followings associations
-  // }
-
-  // unfollow = () => {
-  //   const configObj = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Authorization': `Bearer ${localStorage.getItem("token")}`,
-  //       'Content-Type': 'application/json',
-  //       'Accepts': 'application/json'
-  //     },
-  //     body: JSON.stringify({ follow: { follower_id: this.state.user.id, followed_user_id: parseInt(localStorage.getItem("userId")) } })
-  //   }
-  //   fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}/unfollow`, configObj)
-  //     .then(resp => resp.json())
-  //     .then(user => {
-  //       let newArray = this.state.followingArray
-  //       let foundUser = newArray.find(userObj => userObj.id === user.user.id)
-  //       newArray.splice(newArray.indexOf(foundUser), 1)
-  //       this.setState(() => ({ followingArray: newArray }))
-  //     })
-  //   //Returns the current user with no followers or followings associations
-  // }
-
-
+  showOrHideModal = (photoArray) => {
+    // console.log("Photo Array: ", photoArray)
+    this.setState((previousState) => ({ photoModal: !previousState.photoModal, photoArray: photoArray }))
+  }
 
   render() {
     return (
       <div id="app-container">
         {this.state.user ? <Header user={this.state.user} appLogout={this.appLogout} formClickHandler={this.formClickHandler} /> : null}
         {this.state.signup ? <SignUp appSignupHandler={this.appSignupHandler} displayHandler={this.displayHandler} error={this.state.error} /> : null}
+        {this.state.photoModal ? <PhotoModal showOrHideModal={this.showOrHideModal} photos={this.state.photoArray} showOrHideModal={this.showOrHideModal} /> : null}
         <Switch>
 
           <Route
@@ -165,6 +126,7 @@ class App extends React.Component {
                 <Profile
                   user={this.state.user}
                   appLogout={this.appLogout}
+                  showOrHideModal={this.showOrHideModal}
                 />
                 : null
             }}
@@ -176,6 +138,7 @@ class App extends React.Component {
                 <Home
                   user={this.state.user}
                   appLogout={this.appLogout}
+                  showOrHideModal={this.showOrHideModal}
                 />
                 : null
             }}
