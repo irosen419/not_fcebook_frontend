@@ -17,6 +17,10 @@ img {
   border-radius: 50%;
 }
 
+input {
+  padding-left: 5%;
+}
+
 /* 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

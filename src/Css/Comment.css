@@ -27,6 +27,16 @@
 
 .right .like-component {
     align-items: center;
+    margin-right: 20px;
+    font-size: small;
+}
+
+.right .like-component button{
+    font-size: large;
+}
+
+.right span {
+    margin-left: 10px;
 }
 
 .comment-content {
