@@ -7,3 +7,7 @@
     background: none;
     font-size: x-large;
 }
+
+.like-component button:hover {
+    cursor: pointer;
+}

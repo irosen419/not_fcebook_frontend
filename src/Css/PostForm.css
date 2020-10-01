@@ -30,7 +30,7 @@
 #post-form input {
     height: 20%;
     margin: 10px;
-    border-radius: 5%;
+    /* border-radius: 5%; */
 
 }
 
@@ -46,3 +46,8 @@
     font-size: large;
 }
 
+#post-form button {
+    height: 20%;
+    margin: 10px;
+    border: 1px solid rgb(43, 42, 42);
+}
