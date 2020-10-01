@@ -15,10 +15,39 @@ a:visited {
 
 img {
   border-radius: 50%;
+  object-fit: cover;
 }
 
 input {
   padding-left: 5%;
+}
+
+#photo-modal {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  background: black;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  overflow-y: hidden;
+  overflow: scroll;
+
+  z-index: 1;
+}
+
+#photo-modal span {
+  color: white;
+  font-size: xx-large;
+  position: absolute;
+  top: 25px;
+  right: 50px;
+}
+
+#photo-modal img {
+  border-radius: 0;
+  width: auto;
 }
 
 /* 

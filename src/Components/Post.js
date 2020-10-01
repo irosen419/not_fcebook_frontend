@@ -101,6 +101,7 @@ export default class Post extends React.Component {
                     changeHandler={this.props.changeHandler}
                     submitHandler={this.editSubmit}
                     editContent={this.props.editContent}
+                    showOrHideModal={this.props.showOrHideModal}
                 />
                 <div className="post-wrapper" >
                     <Like
