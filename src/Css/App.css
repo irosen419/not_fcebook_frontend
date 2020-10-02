@@ -5,6 +5,10 @@
   position: relative;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 a {
   text-decoration: none;
 }
@@ -49,12 +53,74 @@ input[type="text"] {
   right: 50px;
 }
 
+#photo-modal .close {
+  z-index: 3
+}
+#photo-modal .close:hover {
+  cursor: pointer;
+  background:  rgb(194, 186, 186);
+  color:rgb(255, 255, 255);
+}
+
+#photo-modal .arrows {
+  z-index: 3;
+  position: absolute;
+  /* display: flex; */
+  width: 100%;
+  height: 100%
+}
+
+#inner-arrows {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#photo-modal .arrows button {
+  position: absolute;
+  background-color: whitesmoke;
+  border-radius: 5px;
+}
+
+
+#photo-modal .arrows button:hover {
+  background:  rgba(19, 18, 18, 1);
+  color:rgb(255, 255, 255);
+}
+
+#photo-modal .arrows button:focus {
+  border-color: none;
+}
+
+#photo-modal .arrows button#next {
+  top: 50%;
+  right: 7.5%;
+
+  height: 50px;
+  width: 100px;
+}
+#photo-modal .arrows button#previous {
+  top: 50%;
+  left: 7.5%;
+
+  height: 50px;
+  width: 100px;
+}
+
 #photo-modal img {
   border-radius: 0;
   object-fit: none;
   width: auto;
 
   z-index: 2;
+}
+
+#photo-modal #fraction {
+  position: absolute;
+  left: 0;
+  background: none;
+  border-radius: none;
+  width: 100px;
 }
 
 /* 

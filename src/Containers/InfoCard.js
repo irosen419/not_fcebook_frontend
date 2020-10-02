@@ -8,7 +8,6 @@ function InfoCard(props) {
     }
     const friends = () => {
         return props.profileFriends.map(user => {
-            console.log("Friend ", user)
             return <a href={`http://localhost:3001/profile/${user.id}`} >
                 <li>
                     {user.img_url ?
@@ -29,7 +28,7 @@ function InfoCard(props) {
                     <img id="profile" alt="" src={img} /> :
                     <img id="profile" alt="" src={props.profileUser.img_url} />
                 }
-                <h2>About {props.profileUser.first_name}</h2>
+                <h2>{props.profileUser.user_name}</h2>
                 {props.profileUser.id !== props.currentUser.id ?
                     <button id="follow-button" onClick={props.followOrUnfollow}>
                         {following().includes(props.currentUser.id) ? 'Unfollow' : 'Follow'}
@@ -43,7 +42,7 @@ function InfoCard(props) {
                 <h4>Birthday</h4>
                 <p>{props.profileUser.birthday}</p>
             </div>
-            <div>
+            <div id="friends">
                 <h4>Friends</h4>
                 <ul>{friends()}</ul>
             </div>

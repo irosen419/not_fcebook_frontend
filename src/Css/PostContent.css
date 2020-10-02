@@ -1,19 +1,23 @@
-.post-content {
+.post-content, .photo-reel {
     display: flex;
     flex-direction: column;
+}
+
+.post-header, .post-header a, .arrows {
+    display: flex;
+}
+
+.post-content {
     padding: 15px 5px 5px 15px;
     font-size: .9375rem;
     text-align: left;
 }
 
-.post-header {
-    display: flex;
+.post-header, .post-header a {
     align-items: center;
 }
 
 .post-header a {
-    display: flex;
-    align-items: center;
     margin-left: 10%;
     min-width: 50%;
 }
@@ -27,3 +31,19 @@ img.post-photo {
     max-width: 50%;
 }
 
+.photo-reel, .arrows {
+    justify-content: center;
+}
+
+.arrows button {
+    margin: 0 10px 0 10px;
+    background: none;
+}
+
+.arrows button:hover {
+    cursor: pointer;
+}
+
+.photo-reel span {
+    text-align: center;
+}

@@ -2,10 +2,13 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import '../Css/PostContent.css'
 import img from "../Components/blank-profile-pic.png"
-import PhotoModal from './PhotoModal'
 
 
 class PostContent extends React.Component {
+
+    state = {
+        imageCounter: 0
+    }
 
     clickHandler = () => {
         localStorage.setItem("userId", this.props.post.user_id)
@@ -19,8 +22,22 @@ class PostContent extends React.Component {
         this.props.showOrHideModal(this.props.post.photos)
     }
 
+    photoReel = () => {
+        return <img className="post-photo" alt="" src={this.props.post.photos[this.state.imageCounter].img_url} onClick={this.showModal} />
+    }
+
+    photoArrows = () => {
+        return (
+            this.props.post.photos.length > 1 ?
+                <div className="arrows">
+                    {this.state.imageCounter > 0 ? <button onClick={() => this.setState((previousState) => ({ imageCounter: previousState.imageCounter - 1 }))}>Previous</button> : null}
+                    {this.state.imageCounter < this.props.post.photos.length - 1 ? <button onClick={() => this.setState((previousState) => ({ imageCounter: previousState.imageCounter + 1 }))}>Next</button> : null}
+                </div> :
+                null
+        )
+    }
+
     render() {
-        console.log("state: ", this.state)
         return (
             <>
                 <div className="post-header">
@@ -49,7 +66,11 @@ class PostContent extends React.Component {
                             </form>
                         </div>}
                     {this.props.post.photos.length > 0 ?
-                        <img className="post-photo" alt="" src={this.props.post.photos[0].img_url} onClick={this.showModal} />
+                        <div className="photo-reel">
+                            {this.photoArrows()}
+                            {this.photoReel()}
+                            {this.props.post.photos.length > 1 ? <span>{this.state.imageCounter + 1} / {this.props.post.photos.length}</span> : null}
+                        </div>
                         : null}
                 </div>
             </>

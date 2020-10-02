@@ -41,7 +41,6 @@ class Home extends React.Component {
 
     sortByDate = (array) => {
         return array.sort((a, b) => {
-            console.log("A: ", a.created_at, "B: ", b.created_at)
             if (a.created_at > b.created_at) return -1;
             if (a.created_at < b.created_at) return 1;
             return 0;
@@ -165,7 +164,6 @@ class Home extends React.Component {
     }
 
     render() {
-        console.log(this.state.homePosts)
         return (
             <div id="home" >
                 <PostForm

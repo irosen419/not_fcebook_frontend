@@ -89,16 +89,16 @@ class Profile extends React.Component {
                 body: formData
             }
             fetch(`http://localhost:3000/api/v1/posts/`, configObj)
-            .then(resp => resp.json())
-            .then(postObj => {
-                console.log(postObj)
-                this.setState(() => ({
-                    posts: [postObj.post, ...this.state.posts],
-                    content: "",
-                    post_photo: [],
-                    post_photoURL: []
-                }))
-            })
+                .then(resp => resp.json())
+                .then(postObj => {
+                    console.log(postObj)
+                    this.setState(() => ({
+                        posts: [postObj.post, ...this.state.posts],
+                        content: "",
+                        post_photo: [],
+                        post_photoURL: []
+                    }))
+                })
         }
 
     }
@@ -112,25 +112,25 @@ class Profile extends React.Component {
         e.persist()
         let fileArray = []
         let i = 0;
-        while (i < e.target.files.length){
+        while (i < e.target.files.length) {
             fileArray.push(e.target.files[i])
             i++
         }
-        for (const file of fileArray){
+        for (const file of fileArray) {
             const fileReader = new FileReader()
             fileReader.readAsDataURL(file)
-            fileReader.onloadend = () =>{
-                this.setState(()=>({
-                    post_photoURL: [fileReader.result, ... this.state.post_photoURL]
+            fileReader.onloadend = () => {
+                this.setState(() => ({
+                    post_photoURL: [fileReader.result, ...this.state.post_photoURL]
                 }))
             }
         }
 
-            this.setState(()=> ({ 
-                post_photo: [fileArray, ...this.state.post_photo].flat()
-            }))
-        
-    }    
+        this.setState(() => ({
+            post_photo: [fileArray, ...this.state.post_photo].flat()
+        }))
+
+    }
 
 
     edit = (postObj) => {

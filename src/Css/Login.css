@@ -32,6 +32,12 @@ div#login input[type="text"] {
 }
 div#login input[type="submit"] {
     font-size: x-large;
+    background-color: #0590db;
+}
+
+div#login input[type=submit]:hover {
+    cursor: pointer;
+    background-color: #32a4e2;
 }
 
 div#login input {
@@ -58,8 +64,13 @@ button#signup-from-login {
     background: none;
 
     margin-top: 2px;
+    margin-left: 5px;
+    transition: .15s;
 }
 
 #signup-from-login:hover, input[type=submit]:hover {
     cursor: pointer;
+    border-radius: 10px;
+    font-weight: 550;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

@@ -9,31 +9,32 @@ export default class PostContainer extends React.Component {
 
     state = {
         comments: this.props.post.comments ? this.props.post.comments : [],
-        content: "", 
+        content: "",
         commentEditObj: ""
     }
 
     renderComments = () => {
-        return this.state.comments.map(comment => 
-            <Comment 
-            comment={comment} 
-            key={comment.id} 
-            user={this.props.user} 
-            editComment={this.editComment} 
-            deleteComment={this.deleteComment}
-            /> 
+        return this.state.comments.map(comment =>
+            <Comment
+                comment={comment}
+                key={comment.id}
+                user={this.props.user}
+                editComment={this.editComment}
+                deleteComment={this.deleteComment}
+                post={this.props.post}
+            />
         )
     }
 
     changeHandler = (e) => {
         e.persist()
-        this.setState(()=>({
+        this.setState(() => ({
             content: e.target.value
         }))
     }
 
     editComment = (commentObj) => {
-        this.setState(()=>({
+        this.setState(() => ({
             content: commentObj.content,
             commentEditObj: commentObj
         }))
@@ -41,44 +42,46 @@ export default class PostContainer extends React.Component {
 
     deleteComment = (commentObj) => {
         const configObj = {
-            method: 'DELETE', 
+            method: 'DELETE',
             headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json', 
-            'Accepts': 'application/json'},
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+                'Accepts': 'application/json'
+            },
             // body: JSON.stringify({comment: updateComment})
         }
         fetch(`http://localhost:3000/api/v1/posts/${commentObj.post_id}/comments/${commentObj.id}`, configObj)
-        .then(resp=>resp.json())
-        .then(post => {
-            this.setState(() => ({ 
-                comments: post.post.comments,
-                content: ""
-            }))
-        })
+            .then(resp => resp.json())
+            .then(post => {
+                this.setState(() => ({
+                    comments: post.post.comments,
+                    content: ""
+                }))
+            })
     }
 
     submitHandler = () => {
-        if (this.state.commentEditObj.id){
+        if (this.state.commentEditObj.id) {
             // -- EDIT COMMENT FETCH -- //
             const updateComment = { content: this.state.content }
             const configObj = {
-                method: 'PATCH', 
+                method: 'PATCH',
                 headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                'Content-Type': 'application/json', 
-                'Accepts': 'application/json'},
-                body: JSON.stringify({comment: updateComment})
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                body: JSON.stringify({ comment: updateComment })
             }
             fetch(`http://localhost:3000/api/v1/posts/${this.state.commentEditObj.post_id}/comments/${this.state.commentEditObj.id}`, configObj)
-            .then(resp=>resp.json())
-            .then(post => {
-                this.setState(() => ({ 
-                    comments: post.post.comments,
-                    content: "",
-                    commentEditObj: ""
-                }))
-            })
+                .then(resp => resp.json())
+                .then(post => {
+                    this.setState(() => ({
+                        comments: post.post.comments,
+                        content: "",
+                        commentEditObj: ""
+                    }))
+                })
         } else {
             // --  NEW COMMENT FETCH -- //
             const newComment = {
@@ -96,13 +99,13 @@ export default class PostContainer extends React.Component {
                 body: JSON.stringify({ comment: newComment })
             }
             fetch(`http://localhost:3000/api/v1/posts/${newComment.post_id}/comments/`, configObj)
-            .then(resp => resp.json())
-            .then(post => {
-                this.setState(() => ({ 
-                    comments: post.post.comments,
-                    content: ""
-                }))
-            })
+                .then(resp => resp.json())
+                .then(post => {
+                    this.setState(() => ({
+                        comments: post.post.comments,
+                        content: ""
+                    }))
+                })
         }
     }
 
@@ -113,10 +116,10 @@ export default class PostContainer extends React.Component {
 
                 {this.renderComments()}
 
-                < CommentForm 
-                    content={this.state.content} 
-                    changeHandler={this.changeHandler} 
-                    submitHandler={this.submitHandler} 
+                < CommentForm
+                    content={this.state.content}
+                    changeHandler={this.changeHandler}
+                    submitHandler={this.submitHandler}
                 />
             </div>
         )
