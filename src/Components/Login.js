@@ -41,7 +41,7 @@ export default class Login extends React.Component {
             <div id="welcome">
                 <div id="title-lines">
                     <h1>! facebook</h1>
-                    <h3>Our Tagline</h3>
+                    <h3>Returning truthy values since 2020</h3>
                 </div>
                 <div id="login">
                     <form id="login-form" onSubmit={this.loginHandler}>

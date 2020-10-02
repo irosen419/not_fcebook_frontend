@@ -8,7 +8,7 @@
     background-color: #0077b6;
 }
 
-button#logout-button, #profile-button, button#home-button {
+button#logout-button, #profile-button, button#home-button, #user-name {
     position: absolute;
     height: 40%;
     top: 30%;
@@ -17,6 +17,9 @@ button#logout-button, #profile-button, button#home-button {
 
 button#logout-button {
     margin-top: 3px;
+    color: white;
+    font-weight: bold;
+    background: none;
 }
 
 button#home-button {
@@ -27,6 +30,7 @@ button#home-button {
     max-width: 12%;
 
     font-weight: bold;
+    font-size: x-large;
     color: white;
 }
 
@@ -40,4 +44,12 @@ button#home-button {
 
 button#logout-button {
     right: 3.5%;
+}
+
+#user-name {
+    margin-top: 8px;
+    right: 16.5%;
+    background: none;
+    color: white;
+    height: 50%;
 }
