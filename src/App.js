@@ -1,5 +1,4 @@
 import React from 'react';
-// import { findRenderedComponentWithType } from 'react-dom/test-utils';
 import { Route, Switch, withRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import SignUp from './Components/SignUp'

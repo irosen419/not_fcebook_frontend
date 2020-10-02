@@ -25,19 +25,20 @@ export default class PostForm extends React.Component {
     showPhotoInput = () => {
         return (
             this.state.photoInput ?
-                <div>
-                    <div id="preview-div">
-                        {this.props.preview.length > 0 ? this.renderPreview() : null}
-                    </div>
-                    <input
-                        type="file"
-                        multiple
-                        name="post_photo"
-                        accept="image/*"
-                        onChange={this.props.pictureHandler}
-                    />
-                </div> :
-                <button onClick={this.togglePhotoInput}>Add a photo!</button>
+            <div>      
+                <div id="preview-div">
+                    {this.props.preview.length > 0 ? this.renderPreview() : null}
+                </div>
+                <input
+                    type="file"
+                    multiple
+                    name="post_photo"
+                    accept="image/*"
+                    onChange={this.props.pictureHandler}
+                />
+            </div> 
+            : <button onClick={this.togglePhotoInput}>Add a photo!</button>
+
         )
     }
 
