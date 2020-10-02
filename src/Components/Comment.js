@@ -52,12 +52,11 @@ export default class Comment extends React.Component {
     }
 
     render() {
-        console.log("Comment props: ", this.props)
         return (
             <div className="comment" >
                 <div className="comment-words">
-                    {this.props.user.img_url ?
-                        <img id="post" alt="" src={this.props.user.img_url} /> :
+                    {this.props.comment.user_url ?
+                        <img id="post" alt="" src={this.props.comment.user_url} /> :
                         <img id="post" alt="Alt" src={img} />
                     }
                     <strong><p className="comment-username">{this.props.comment.user_name}:</p></strong>

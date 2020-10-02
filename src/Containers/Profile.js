@@ -125,13 +125,11 @@ class Profile extends React.Component {
                 }))
             }
         }
-
-            this.setState(()=> ({ 
-                post_photo: [fileArray, ...this.state.post_photo].flat()
-            }))
+        this.setState(()=> ({ 
+            post_photo: [fileArray, ...this.state.post_photo].flat()
+        }))
         
     }    
-
 
     edit = (postObj) => {
         console.log("edit obj: ", postObj)
@@ -155,7 +153,6 @@ class Profile extends React.Component {
         fetch(`http://localhost:3000/api/v1/users/${this.props.user.id}/follow`, configObj)
             .then(resp => resp.json())
             .then(message => {
-                console.log(message)
                 if (message.success) {
                     const u = {
                         id: this.props.user.id,
@@ -222,7 +219,6 @@ class Profile extends React.Component {
     }
 
     render() {
-        console.log(this.state.post_photoURL)
         return (
             <div id="profile">
                 <InfoCard

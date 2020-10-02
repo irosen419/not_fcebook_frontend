@@ -8,10 +8,10 @@ div#signup-modal {
     height: 100%;
     width: 100%;
 
-    background-color: whitesmoke;
+    /* background-color: whitesmoke;
     opacity: 0.8;
 
-    z-index: 1;
+    z-index: 1; */
 }
 
 div#signup {
@@ -23,7 +23,7 @@ div#signup {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: white;
 
-    opacity: 1;
+    /* opacity: 1; */
 }
 
 div#signup form#signup-form {

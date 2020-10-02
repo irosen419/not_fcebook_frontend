@@ -13,6 +13,8 @@ class Home extends React.Component {
         content: "",
         editContent: "",
         editPostObj: null,
+        post_photo: [],
+        post_photoURL: [],
         mounted: false
     }
 
@@ -80,29 +82,54 @@ class Home extends React.Component {
                 })
         } else {
             // -- NEW POST FETCH -- //
-            const newPost = {
-                content: this.state.content,
-                user_id: this.state.currentUser.id,
-                profile_user_id: this.state.currentUser.id
+            let formData = new FormData()
+            formData.append('post[content]', this.state.content)
+            formData.append('post[user_id]', this.props.user.id)
+            formData.append('post[profile_user_id]', this.props.user.id)
+            const files = this.state.post_photo;
+            for (let i = 0; i < files.length; i++) {
+                formData.append(`post_photo[${i}]`, files[i])
             }
             const configObj = {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    'Content-Type': 'application/json',
-                    'Accepts': 'application/json'
-                },
-                body: JSON.stringify({ post: newPost })
+                headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
+                body: formData
             }
             fetch(`http://localhost:3000/api/v1/posts/`, configObj)
-                .then(resp => resp.json())
-                .then(postObj => {
-                    this.setState(() => ({
-                        homePosts: [postObj.post, ...this.state.homePosts],
-                        content: ""
-                    }))
-                })
+            .then(resp => resp.json())
+            .then(postObj => {
+                console.log(postObj)
+                this.setState(() => ({
+                    homePosts: [postObj.post, ...this.state.homePosts],
+                    content: "",
+                    post_photo: [],
+                    post_photoURL: []
+                }))
+            })
         }
+    }
+
+    pictureHandler = (e) => {
+        e.persist()
+        let fileArray = []
+        let i = 0;
+        while (i < e.target.files.length){
+            fileArray.push(e.target.files[i])
+            i++
+        }
+        for (const file of fileArray){
+            const fileReader = new FileReader()
+            fileReader.readAsDataURL(file)
+            fileReader.onloadend = () =>{
+                this.setState(()=>({
+                    post_photoURL: [fileReader.result, ... this.state.post_photoURL]
+                }))
+            }
+        }
+        this.setState(()=> ({ 
+            post_photo: [fileArray, ...this.state.post_photo].flat()
+        }))
+        
     }
 
     edit = (postObj) => {
@@ -172,6 +199,8 @@ class Home extends React.Component {
                     content={this.state.content}
                     changeHandler={this.changeHandler}
                     submitHandler={this.submitHandler}
+                    preview={this.state.post_photoURL}
+                    pictureHandler={this.pictureHandler}
                 />
                 {this.state.homePosts.length > 0 ? this.renderPosts() : this.mounted()}
             </div>

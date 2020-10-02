@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import '../Css/Signup.css'
 
 export default class SignUp extends React.Component {

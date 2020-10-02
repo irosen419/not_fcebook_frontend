@@ -20,7 +20,6 @@ class PostContent extends React.Component {
     }
 
     render() {
-        console.log("state: ", this.state)
         return (
             <>
                 <div className="post-header">

@@ -16,7 +16,7 @@ function Header(props) {
             <img id="profile-button" alt="Alt" src={props.user.img_url} onClick={clickHandler} /> :
             <img id="profile-button" alt="Default Img" src={img} onClick={clickHandler} />
     }
-    console.log(props)
+
     return (
         <div id="header">
             <Link to={'/home'}><button id="home-button">! facebook</button></Link>
