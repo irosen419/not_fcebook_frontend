@@ -8,6 +8,8 @@ div#signup-modal {
     height: 100%;
     width: 100%;
 
+    background: rgb(199, 197, 197, 0.75);
+
 }
 
 div#signup {

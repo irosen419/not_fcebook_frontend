@@ -81,9 +81,10 @@ export default class Comment extends React.Component {
         return (
             <div className="comment" >
                 <div className="comment-words">
-                    this.props.comment.user_url ?
-                        <a href={`/profile/${this.props.comment.user_id}`}><img id="post" alt="" src={this.props.comment.user_url} /></a> :
-                        <a href={`/profile/${this.props.comment.user_id}`}><img id="post" alt="Alt" src={img} /></a>
+                    {
+                        this.props.comment.user_url ?
+                            <a href={`/profile/${this.props.comment.user_id}`}><img id="post" alt="" src={this.props.comment.user_url} /></a> :
+                            <a href={`/profile/${this.props.comment.user_id}`}><img id="post" alt="Alt" src={img} /></a>
                     }
                     <a href={`/profile/${this.props.comment.user_id}`}><strong><p className="comment-username">{this.props.comment.user_name}:</p></strong></a>
                     <p className="comment-content">{this.props.comment.content}</p>

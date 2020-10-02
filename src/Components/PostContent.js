@@ -41,7 +41,7 @@ class PostContent extends React.Component {
         return (
             <>
                 <div className="post-header">
-                    <a href={`http://localhost:3001/profile/${this.props.post.user_id}`} >
+                    <a href={`/profile/${this.props.post.user_id}`} >
                         {this.props.post.post_user_url ?
                             <img id="post" alt="" src={this.props.post.post_user_url} /> :
                             <img id="post" alt="Alt" src={img} />

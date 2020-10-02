@@ -25,19 +25,19 @@ export default class PostForm extends React.Component {
     showPhotoInput = () => {
         return (
             this.state.photoInput ?
-            <div>      
-                <div id="preview-div">
-                    {this.props.preview.length > 0 ? this.renderPreview() : null}
+                <div>
+                    <div id="preview-div">
+                        {this.props.preview.length > 0 ? this.renderPreview() : null}
+                    </div>
+                    <input
+                        type="file"
+                        multiple
+                        name="post_photo"
+                        accept="image/*"
+                        onChange={this.props.pictureHandler}
+                    />
                 </div>
-                <input
-                    type="file"
-                    multiple
-                    name="post_photo"
-                    accept="image/*"
-                    onChange={this.props.pictureHandler}
-                />
-            </div> 
-            : <button onClick={this.togglePhotoInput}>Add a photo!</button>
+                : <button onClick={this.togglePhotoInput}>Add a photo!</button>
 
         )
     }
@@ -45,17 +45,17 @@ export default class PostForm extends React.Component {
     render() {
         return (
             <form id="post-form" onSubmit={this.submit} >
-                <div id="inner-form">
-                    <input
-                        type="text"
-                        placeholder="New Post..."
-                        name="content"
-                        value={this.props.content}
-                        onChange={this.props.changeHandler}
-                    />
-                    {this.showPhotoInput()}
-                    <input type="submit" value="Post" />
-                </div>
+                {/* <div id="inner-form"> */}
+                <input
+                    type="text"
+                    placeholder="New Post..."
+                    name="content"
+                    value={this.props.content}
+                    onChange={this.props.changeHandler}
+                />
+                {this.showPhotoInput()}
+                <input type="submit" value="Post" />
+                {/* </div> */}
             </form>
         )
     }
