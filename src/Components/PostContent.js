@@ -38,7 +38,6 @@ class PostContent extends React.Component {
     }
 
     render() {
-        console.log("ARROW: ", this.state.imageCounter)
         return (
             <>
                 <div className="post-header">
