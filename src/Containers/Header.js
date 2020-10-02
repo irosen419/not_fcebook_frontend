@@ -16,12 +16,12 @@ function Header(props) {
             <img id="profile-button" alt="Alt" src={props.user.img_url} onClick={clickHandler} /> :
             <img id="profile-button" alt="Default Img" src={img} onClick={clickHandler} />
     }
-
     return (
         <div id="header">
             <Link to={'/home'}><button id="home-button">! facebook</button></Link>
             <SearchForm formClickHandler={props.formClickHandler} />
             <a href={`/profile/${props.user.id}`}>{chooseImage()}</a>
+            <a href={`/profile/${props.user.id}`}><p id="user-name">{props.user.first_name}</p></a>
             <button id="logout-button" onClick={props.appLogout}>Log Out</button>
         </div>
     )

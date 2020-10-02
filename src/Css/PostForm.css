@@ -10,6 +10,9 @@
     border-radius: 10px;
 
     box-shadow: .5px 1px 3px grey;
+
+    background: rgba(255, 255, 255, 1)
+    
 }
 
 #post-form div#inner-form {
@@ -25,19 +28,19 @@
 
     height: 100%;
     width: 100%;
+
+    z-index: 0;
 }
 
 #post-form input {
     height: 20%;
     margin: 10px;
-    /* border-radius: 5%; */
-
 }
 
 #post-form input[type="text"] {
     width: 90%;
     font-size: medium;
-
+    
     padding-left: 5%;
 }
 
@@ -46,9 +49,14 @@
     font-size: large;
 }
 
+#post-form input[type="file"] {
+    height: 20px;
+}
 
 .preview {
     max-height: 40px;
+    margin: 0 15px 0 15px;
+    border-radius: 0;
     width: auto;
 }
 

@@ -19,7 +19,7 @@ export default class PostForm extends React.Component {
     }
 
     renderPreview = () => {
-        return this.props.preview.map(photo => <img key={""} className="preview" alt="" src={photo} /> )
+        return this.props.preview.map(photo => <img key={""} className="preview" alt="" src={photo} />)
     }
 
     showPhotoInput = () => {
@@ -38,6 +38,7 @@ export default class PostForm extends React.Component {
                 />
             </div> 
             : <button onClick={this.togglePhotoInput}>Add a photo!</button>
+
         )
     }
 

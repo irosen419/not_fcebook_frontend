@@ -21,7 +21,6 @@ class InfoCard extends React.Component {
         })
     }
 
-
     render(){
         return (
             <div id="info-card">
@@ -51,6 +50,7 @@ class InfoCard extends React.Component {
             </div >
         )
     }
+
 }
 
 export default withRouter(InfoCard)

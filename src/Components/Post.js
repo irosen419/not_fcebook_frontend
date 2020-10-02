@@ -68,7 +68,7 @@ export default class Post extends React.Component {
     showEditButtons = () => {
         return (
             <div className="buttons post-buttons">
-                <span onClick={this.toggleEditor}>x</span>
+                <span className="close" onClick={this.toggleEditor}>x</span>
                 <button className="post-edit edit" onClick={this.edit} >Edit</button>
                 <button className="post-delete delete" onClick={() => this.props.deletePost(this.state.post)} >Delete</button>
             </div>

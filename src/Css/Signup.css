@@ -8,22 +8,19 @@ div#signup-modal {
     height: 100%;
     width: 100%;
 
-    /* background-color: whitesmoke;
-    opacity: 0.8;
-
-    z-index: 1; */
 }
 
 div#signup {
+    position: relative;
     width: 30%;
     padding: 12px;
 
     border-radius: 5%;
 
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background-color: white;
 
-    /* opacity: 1; */
+    background: rgba(255, 255, 255, 1.0);
+    z-index: 2;
 }
 
 div#signup form#signup-form {
@@ -41,8 +38,13 @@ div#signup input {
     border-width: .5px;
 }
 
+div#signup input[type=submit] {
+    background-color: #0590db;
+}
+
 div#signup input[type=submit]:hover {
     cursor: pointer;
+    background-color: #32a4e2;
 }
 
 .close, button {
