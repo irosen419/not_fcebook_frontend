@@ -18,7 +18,7 @@ function Header(props) {
     }
     return (
         <div id="header">
-            <Link to={'/home'}><button id="home-button">! facebook</button></Link>
+            <Link to={'/home'}><button id="home-button">! fcebook</button></Link>
             <SearchForm formClickHandler={props.formClickHandler} />
             <a href={`/profile/${props.user.id}`}>{chooseImage()}</a>
             <a href={`/profile/${props.user.id}`}><p id="user-name">{props.user.first_name}</p></a>

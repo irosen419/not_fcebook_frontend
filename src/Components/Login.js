@@ -40,7 +40,7 @@ export default class Login extends React.Component {
 
             <div id="welcome">
                 <div id="title-lines">
-                    <h1>! facebook</h1>
+                    <h1>! fcebook</h1>
                     <h3>Returning truthy values since 2020</h3>
                 </div>
                 <div id="login">
